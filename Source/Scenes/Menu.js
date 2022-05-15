@@ -48,7 +48,7 @@ class Menu extends Phaser.Scene
         (
             centerX, // x-coord
             centerY - textSpacer, // y-coord
-            "DEAD AHEAD", // initial text to be displayed
+            "(enter final game title)", // initial text to be displayed
             menuConfig // configuration object
         ).setOrigin(0.5);
 

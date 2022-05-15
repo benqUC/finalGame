@@ -32,6 +32,7 @@ class Play extends Phaser.Scene
         this.load.audio("go3", "./Assets/bgm/go3.wav");
 
         this.load.image("test", "./Assets/test.png");
+        this.load.image("test1", "./Assets/test1.png");
 
         // load spritesheet for death animation
         this.load.spritesheet
@@ -126,6 +127,8 @@ class Play extends Phaser.Scene
             }
         }
 
+        this.placeTower(2,3);
+
         // m is multiplier on how far zombie 2 is from zombie 1. Useful if we are moving roads
         var m = 93;
         // min/max value on zombie spawns
@@ -180,8 +183,6 @@ class Play extends Phaser.Scene
         // add the UI text
         // player score updates during play
         this.p1Score = 0;
-        // high score is saved across games played
-        this.hScore = parseInt(localStorage.getItem("score")) || 0;
         // scores display configuration
         let scoreConfig =
         {
@@ -229,19 +230,7 @@ class Play extends Phaser.Scene
         //  add the event to increment the clock
         //  code adapted from:
         //  https://phaser.discourse.group/t/countdown-timer/2471/3
-        this.timedEvent = this.time.addEvent
-        (
-            {
-                delay: 7500, //default 7500 (7.5 seconds)
-                callback: () =>
-                {
-                    this.gameClock += 15000*this.tMult; 
-                    this.timeLeft.text = this.formatTime(this.gameClock);
-                },
-                scope: this,
-                loop: true
-            }
-        );
+        
         this.tMult = 0;
 
         let countdownConfig =
@@ -348,10 +337,6 @@ class Play extends Phaser.Scene
             for(var i = 0; i < this.zombies.length; i++){
                 this.zombies[i].update(1, this.p1Lives);
             }
-            // update obstacles
-            for(var i = 0; i < this.obstacles.length; i++){
-                this.obstacles[i].update(this.p1Lives, this.omin, this.omax);
-            }
 
             // check zombie collisions
             for(var i = 0; i < this.zombies.length; i++){
@@ -361,28 +346,12 @@ class Play extends Phaser.Scene
                     this.zombieKill(this.zombies[i]);
                 }        
             }
-            // check obstacle collisions
-            for(var i = 0; i < this.obstacles.length; i++){
-                if(this.checkCollision(this.player, this.obstacles[i]))
-                {
-                    this.player.reset();
-                    this.obstacleDestroy(this.obstacles[i]);
-                }        
-            }
             // check if enemies overlap
             for(var i = 0; i < this.obstacles.length; i++){
                 for(var j = 0; j < this.zombies.length; j++){
                     if(this.checkOverlap(this.zombies[j], this.obstacles[i]))
                     {
                         this.zombies[i].y -= 50;
-                    }        
-                }        
-            }
-            for(var i = 0; i < this.obstacles.length - 1; i++){
-                for(var j = 1; j < this.obstacles.length; j++){
-                    if(this.checkOverlap(this.obstacles[j], this.obstacles[i]))
-                    {
-                        this.obstacles[i].y -= 100;
                     }        
                 }        
             }
@@ -440,36 +409,21 @@ class Play extends Phaser.Scene
             this.gameOver = true;
         }
     }
+
+    placeTower(i,j){
+        this.grid[i][j] = new Tower(
+                this, // scene
+                25 + 50 * i, // x-coord
+                25 + 50 * j, // y-coord
+                "test1", // texture
+                0, // frame
+                50, // width
+                50, // length
+                0, // height (0 is passable, 1 can have items be thrown over it, 2 is completely impassable on ground, 3 is impassible mid air)
+        ).setScale(0.5, 0.5).setOrigin(0, 0);
+        this.add.image(this.grid[i][j].x, this.grid[i][j].y, 'test1')
+    }
     
-    obstacleDestroy(obstacle)
-    {
-        this.gasTimer = 0;
-        obstacle.alpha = 0; // set obstacle to be fully transparent
-        obstacle.y = Phaser.Math.Between(-50, -1000); // reset position
-        obstacle.alpha = 1; // set obstacle to be fully visible
-        this.p1Lives -= 2;
-
-        if (this.p1Lives <= 0) {
-            this.gameOver = true;
-        }
-    }
-
-    consumeGas(player){
-        this.gasTimer = 0;
-        this.p1Score -= 10;
-        if(this.p1Score < 0){
-            this.p1Score += 10;
-            this.gas -= 1;
-            this.gasMeter = this.gas;
-        } else {
-            this.scoreLeft.text = "$" + this.p1Score;
-        }
-        this.p1Lives += 1;
-        if(this.gas <= 0){
-            this.gameOver = true;
-        }
-    }
-
     formatTime(ms)
     {
         let s = ms/1000;
