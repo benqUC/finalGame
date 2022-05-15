@@ -15,11 +15,28 @@ class Player extends Phaser.GameObjects.Sprite
 
     update(speed)
     {
-        if(keyA.isDown && this.x >= game.config.width/2 - 316 || keyLEFT.isDown && this.x >= game.config.width/2 - 316) {  // left movement
+        if (keyW.isDown && keyA.isDown &&  this.y >= 0 && this.x >= 0) {  //Northwest movement
+            this.x -= speed/2;
+            this.y -= speed/2;
+        } else if (keyW.isDown && keyD.isDown && this.y >= 0 && this.x <= game.config.width - 50) {  //Northeast movement
+            this.x += speed/2;
+            this.y -= speed/2;
+        } else if (keyS.isDown && keyD.isDown && this.y <= game.config.height - 50 && this.x <= game.config.width - 50) {  //Soutwest movement
+            this.x += speed/2;
+            this.y += speed/2;
+        } else if (keyS.isDown && keyA.isDown && this.y <= game.config.height - 50 && this.x >= 0) {  //Southeast movement
+            this.x -= speed/2;
+            this.y += speed/2;
+        } else if(keyW.isDown && this.y >= 0) {  // left movement
+            this.y -= speed*(4/5);
+        } else if (keyA.isDown && this.x >= 0) {  //right movement
             this.x -= speed*(4/5);
-        } else if (keyD.isDown && this.x <= game.config.width/2 + 259 || keyRIGHT.isDown && this.x <= game.config.width/2 + 259) {  //right movement
+        } else if (keyS.isDown && this.y <= game.config.height - 50) {  //right movement
+            this.y += speed*(4/5);
+        } else if (keyD.isDown && this.x <= game.config.width - 50) {  //right movement
             this.x += speed*(4/5);
-        }
+        } 
+
     }
 
     // reset player 

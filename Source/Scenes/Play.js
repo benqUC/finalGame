@@ -33,6 +33,7 @@ class Play extends Phaser.Scene
 
         this.load.image("test", "./Assets/test.png");
         this.load.image("test1", "./Assets/test1.png");
+        this.load.image("p", "./Assets/p.png");
 
         // load spritesheet for death animation
         this.load.spritesheet
@@ -68,41 +69,6 @@ class Play extends Phaser.Scene
 
         //----------------------------------------------------------------------
         // configure the user interface
-        // place tile sprite background
-
-        //----------------------------------------------------------------------
-        // add in the game objects
-        // add player (p1)
-        this.player = new Player
-        (
-            this, // scene
-            game.config.width/2, // x-coord
-            game.config.height/1.45, // y-coord
-            "car_atlas", // texture
-            0, // frame
-            10,
-        ).setScale(0.5, 0.5).setOrigin(0, 0);
-
-        // add player animations
-        this.anims.create({
-            key: 'car_anim',
-            frames: this.anims.generateFrameNames('car_atlas', {
-                prefix: 'sprite',
-                start: 1,
-                end: 6,
-                suffix: '',
-            }),
-            frameRate: 12,
-            repeat: -1,
-        });
-
-        // play animation
-        this.player.play("car_anim");
-
-        // array of obstacles and zombies
-        this.obstacles = [];
-        this.zombies = [];
-
         // grid placement
         var X = game.config.width/50;
         var Y = game.config.height/50;
@@ -126,8 +92,43 @@ class Play extends Phaser.Scene
                 this.add.image(this.grid[i][j].x, this.grid[i][j].y, 'test')
             }
         }
+        
+        //----------------------------------------------------------------------
+        // add in the game objects
+        // add player (p1)
+        this.player = new Player
+        (
+            this, // scene
+            game.config.width/2, // x-coord
+            game.config.height/1.45, // y-coord
+            "p", // texture
+            0, // frame
+            10,
+        ).setScale(0.5, 0.5).setOrigin(0, 0);
 
-        this.placeTower(2,3);
+        // add player animations
+        /*
+        this.anims.create({
+            key: 'car_anim',
+            frames: this.anims.generateFrameNames('car_atlas', {
+                prefix: 'sprite',
+                start: 1,
+                end: 6,
+                suffix: '',
+            }),
+            frameRate: 12,
+            repeat: -1,
+        });
+
+        // play animation
+        this.player.play("car_anim");
+        */
+
+        // array of obstacles and zombies
+        this.obstacles = [];
+        this.zombies = [];
+
+        this.placeTower(2,3); // debug purposes
 
         // m is multiplier on how far zombie 2 is from zombie 1. Useful if we are moving roads
         var m = 93;
@@ -153,8 +154,10 @@ class Play extends Phaser.Scene
         keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
 
-        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
