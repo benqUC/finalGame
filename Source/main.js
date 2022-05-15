@@ -2,10 +2,10 @@
 let config =
 {
     type: Phaser.CANVAS,
-    width: window.innerWidth, //default 640
+    width: 650, //default 640
     //width: 1700, //default 640
     
-    height: window.innerHeight, //default 480
+    height: 500, //default 480
 
     // scale: {
     //     mode: Phaser.Scale.FIT,

@@ -39,7 +39,7 @@ class Tutorial extends Phaser.Scene
     //--------------------------------------------------------------------------
     create()
     {
-
+        
         this.road = this.add.tileSprite
         (
             0, 0, game.config.width, game.config.height, 'road'

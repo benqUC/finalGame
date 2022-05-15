@@ -25,39 +25,13 @@ class Play extends Phaser.Scene
         this.load.image("obstacle1", "./Assets/obstacles/obstacle01.png");
         this.load.image("obstacle2", "./Assets/obstacles/obstacle02.png");
 
-        // rpm meter
-        this.load.image("rpm0", "./Assets/rpm/dial-rpm00.png");
-        this.load.image("rpm1", "./Assets/rpm/dial-rpm01.png");
-        this.load.image("rpm2", "./Assets/rpm/dial-rpm02.png");
-        this.load.image("rpm3", "./Assets/rpm/dial-rpm03.png");
-        this.load.image("rpm4", "./Assets/rpm/dial-rpm04.png");
-        this.load.image("rpm5", "./Assets/rpm/dial-rpm05.png");
-
-        // mph meter
-        this.load.image("mph0", "./Assets/mph/dial-mph00.png");
-        this.load.image("mph1", "./Assets/mph/dial-mph01.png");
-        this.load.image("mph2", "./Assets/mph/dial-mph02.png");
-        this.load.image("mph3", "./Assets/mph/dial-mph03.png");
-        this.load.image("mph4", "./Assets/mph/dial-mph04.png");
-        this.load.image("mph5", "./Assets/mph/dial-mph05.png");
-        this.load.image("mph6", "./Assets/mph/dial-mph06.png");
-        this.load.image("mph7", "./Assets/mph/dial-mph07.png");
-        this.load.image("mph8", "./Assets/mph/dial-mph08.png");
-        this.load.image("mph9", "./Assets/mph/dial-mph09.png");
-        this.load.image("mph10", "./Assets/mph/dial-mph10.png");
-
-        // gas meter
-        this.load.image("gas1", "./Assets/gas/dial-gas05.png");
-        this.load.image("gas2", "./Assets/gas/dial-gas04.png");
-        this.load.image("gas3", "./Assets/gas/dial-gas03.png");
-        this.load.image("gas4", "./Assets/gas/dial-gas02.png");
-        this.load.image("gas5", "./Assets/gas/dial-gas01.png");
-
         // soundtracks
         this.load.audio("start1", "./Assets/bgm/start1.wav");
         this.load.audio("go1", "./Assets/bgm/go1.OGG");
         this.load.audio("go2", "./Assets/bgm/go2.wav");
         this.load.audio("go3", "./Assets/bgm/go3.wav");
+
+        this.load.image("test", "./Assets/test.png");
 
         // load spritesheet for death animation
         this.load.spritesheet
@@ -94,19 +68,7 @@ class Play extends Phaser.Scene
         //----------------------------------------------------------------------
         // configure the user interface
         // place tile sprite background
-        this.road = this.add.tileSprite
-        (
-            0, 0, game.config.width, game.config.height, 'road'
-        ).setOrigin(0, 0);
 
-        this.hud = this.add.image(game.config.width/2, game.config.height - 240, 'hud');
-
-        this.rpm = this.add.image(game.config.width/2, game.config.height - 54, 'rpm0');
-        this.mph = this.add.image(game.config.width/2, game.config.height - 54, 'mph0');
-        this.gasDial = this.add.image(game.config.width/2, game.config.height - 54, 'gas1');
-
-        this.arpm = ['rpm0','rpm1','rpm2','rpm3','rpm4','rpm5']
-        this.amph = ['mph0','mph1','mph2','mph3','mph4','mph5','mph6','mph7','mph8','mph9','mph10']
         //----------------------------------------------------------------------
         // add in the game objects
         // add player (p1)
@@ -140,6 +102,30 @@ class Play extends Phaser.Scene
         this.obstacles = [];
         this.zombies = [];
 
+        // grid placement
+        var X = game.config.width/50;
+        var Y = game.config.height/50;
+        
+        this.grid = [];
+
+        for(var i = 0; i < X; i++){ // x axis
+            this.grid[i] = [];
+            for(var j = 0; j < Y; j++){ // y axis
+                this.grid[i][j] = new Tile
+                (
+                    this, // scene
+                    25 + 50 * i, // x-coord
+                    25 + 50 * j, // y-coord
+                    "test", // texture
+                    0, // frame
+                    50, // width
+                    50, // length
+                    0, // height (0 is passable, 1 can have items be thrown over it, 2 is completely impassable on ground, 3 is impassible mid air)
+                ).setScale(0.5, 0.5).setOrigin(0, 0);
+                this.add.image(this.grid[i][j].x, this.grid[i][j].y, 'test')
+            }
+        }
+
         // m is multiplier on how far zombie 2 is from zombie 1. Useful if we are moving roads
         var m = 93;
         // min/max value on zombie spawns
@@ -150,47 +136,11 @@ class Play extends Phaser.Scene
         this.omax = game.config.width/2 + 235; // max right
 
         var num = 4;
-        for(var i = 0; i <= num; i++){
-
-        }
 
         // add obstacle 1
         this.obstacle1 = new Obstacle
         (this, Phaser.Math.Between(this.omin, this.omax - 105), Phaser.Math.Between(min, max), 'roadblock1', 0).setOrigin(0, 0);
         this.obstacles.push(this.obstacle1);
-        // add obstacle 2
-        this.obstacle2 = new Obstacle
-        (this, Phaser.Math.Between(this.omin, this.omax - 105), Phaser.Math.Between(min, max), 'obstacle1', 0).setOrigin(0, 0);
-        this.obstacles.push(this.obstacle2);
-        // add obstacle 3
-        this.obstacle3 = new Obstacle
-        (this, Phaser.Math.Between(this.omin, this.omax - 105), Phaser.Math.Between(min, max), 'obstacle2', 0).setOrigin(0, 0);
-        this.obstacles.push(this.obstacle3);        
-        
-        // add zombie 1
-        this.zombie1 = new Zombie
-        (this, game.config.width/2 - 259, Phaser.Math.Between(min, max), 'zombie', 0, 20).setOrigin(0, 0);
-        this.zombies.push(this.zombie1);
-        // add zombie 2
-        this.zombie2 = new Zombie
-        (this, this.zombie1.x + m, Phaser.Math.Between(min, max), 'zombie', 0, 20).setOrigin(0, 0);
-        this.zombies.push(this.zombie2);
-        // add zombie 3
-        this.zombie3 = new Zombie
-        (this, this.zombie1.x + m*2, Phaser.Math.Between(min, max), 'zombie', 0, 20).setOrigin(0, 0);
-        this.zombies.push(this.zombie3);
-
-        this.zombie4 = new Zombie
-        (this, game.config.width/2 + 41, Phaser.Math.Between(min, max), 'zombie', 0, 20).setOrigin(0, 0);
-        this.zombies.push(this.zombie4);
-
-        this.zombie5 = new Zombie
-        (this, this.zombie4.x + m, Phaser.Math.Between(min, max), 'zombie', 0, 20).setOrigin(0, 0);
-        this.zombies.push(this.zombie5);
-
-        this.zombie6 = new Zombie
-        (this, this.zombie4.x + m*2, Phaser.Math.Between(min, max), 'zombie', 0, 20).setOrigin(0, 0);
-        this.zombies.push(this.zombie6);
 
         //----------------------------------------------------------------------
         // add the user input
@@ -345,13 +295,6 @@ class Play extends Phaser.Scene
             }
         );
 
-        // checkpoint
-        this.uGasC = 1
-        this.uGasP = 1
-        this.uArmor = 1
-        this.uKill = 1
-        this.uFill = (8 - this.gas) * (11 - this.uGasC);
-
         //----------------------------------------------------------------------
         // game over event
         this.gameOver = false;
@@ -365,14 +308,13 @@ class Play extends Phaser.Scene
     // UPDATE
     //--------------------------------------------------------------------------
     update()
-    {
+    {   
         // generally updates every frame
         // starts Start timer
         if(!this.init){
             if(!this.start.isPlaying & !this.checkpoint){
                 this.start.stop()       
                 this.init = true;
-                this.gasTimer -= 3;
                 this.go1.play();
                 this.cdtLeft.destroy();
                 this.cdtMult = 0;
@@ -399,7 +341,6 @@ class Play extends Phaser.Scene
         if(!this.gameOver & this.init)
         {
             // update tile sprite
-            this.road.tilePositionY -= this.p1Lives;  
             // update player
             this.player.update(this.p1Lives);
 
@@ -434,7 +375,6 @@ class Play extends Phaser.Scene
                     if(this.checkOverlap(this.zombies[j], this.obstacles[i]))
                     {
                         this.zombies[i].y -= 50;
-                        console.log('boom');
                     }        
                 }        
             }
@@ -443,102 +383,10 @@ class Play extends Phaser.Scene
                     if(this.checkOverlap(this.obstacles[j], this.obstacles[i]))
                     {
                         this.obstacles[i].y -= 100;
-                        console.log('boom');
                     }        
                 }        
             }
-        
-            //switches clock from AM to PM
-            if(this.gameClock >= 1500000){
-                if(this.ampm == 'pm'){
-                    this.ampm = 'am'
-                }
-                if(this.ampm == 'am'){
-                    this.ampm = 'pm'
-                }
-                this.gameClock = 60000;
-                this.timeLeft.text = this.formatTime(this.gameClock);
-            }
-        }
-        
-        // rpm indicator
-        if(this.gasTimer == "0"){
-            this.rpm.destroy();
-            this.rpm = this.add.image(game.config.width/2, game.config.height - 54, 'rpm0');
-        } else if(this.gasTimer == "1"){
-            this.rpm.destroy();
-            this.rpm = this.add.image(game.config.width/2, game.config.height - 54, 'rpm1');
-        }else if(this.gasTimer == "2"){
-            this.rpm.destroy();
-            this.rpm = this.add.image(game.config.width/2, game.config.height - 54, 'rpm2');
-        }else if(this.gasTimer == "3"){
-            this.rpm.destroy();
-            this.rpm = this.add.image(game.config.width/2, game.config.height - 54, 'rpm3');
-        }else if(this.gasTimer == "4"){
-            this.rpm.destroy();
-            this.rpm = this.add.image(game.config.width/2, game.config.height - 54, 'rpm4');
-        }else if(this.gasTimer == "5"){
-            this.rpm.destroy();
-            this.rpm = this.add.image(game.config.width/2, game.config.height - 54, 'rpm5');
-        }
-        // if a player avoids zombies for 15 seconds, they consume gas
-        if(this.gasTimer == 6){
-            this.consumeGas(this.player);
-        }
-
-        // mph indicator
-        if(this.p1Lives == "0"){
-            this.mph.destroy();
-            this.mph = this.add.image(game.config.width/2, game.config.height - 54, 'mph0');
-        } else if(this.p1Lives == "1"){
-            this.mph.destroy();
-            this.mph = this.add.image(game.config.width/2, game.config.height - 54, 'mph1');
-        } else if(this.p1Lives == "2"){
-            this.mph.destroy();
-            this.mph = this.add.image(game.config.width/2, game.config.height - 54, 'mph2');
-        } else if(this.p1Lives == "3"){
-            this.mph.destroy();
-            this.mph = this.add.image(game.config.width/2, game.config.height - 54, 'mph3');
-        } else if(this.p1Lives == "4"){
-            this.mph.destroy();
-            this.mph = this.add.image(game.config.width/2, game.config.height - 54, 'mph4');
-        } else if(this.p1Lives == "5"){
-            this.mph.destroy();
-            this.mph = this.add.image(game.config.width/2, game.config.height - 54, 'mph5');
-        } else if(this.p1Lives == "6"){
-            this.mph.destroy();
-            this.mph = this.add.image(game.config.width/2, game.config.height - 54, 'mph6');
-        } else if(this.p1Lives == "7"){
-            this.mph.destroy();
-            this.mph = this.add.image(game.config.width/2, game.config.height - 54, 'mph7');
-        } else if(this.p1Lives == "8"){
-            this.mph.destroy();
-            this.mph = this.add.image(game.config.width/2, game.config.height - 54, 'mph8');
-        } else if(this.p1Lives == "9"){
-            this.mph.destroy();
-            this.mph = this.add.image(game.config.width/2, game.config.height - 54, 'mph9');
-        } else if(this.p1Lives >= "10"){
-            this.mph.destroy();
-            this.mph = this.add.image(game.config.width/2, game.config.height - 54, 'mph10');
-        }
-
-        // gas indicator
-        if(this.gas <= 0){
-            this.gasDial.destroy();
-            this.gasDial = this.add.image(game.config.width/2, game.config.height - 54, 'gas1');
-        } else if(this.gas <= 2){
-            this.gasDial.destroy();
-            this.gasDial = this.add.image(game.config.width/2, game.config.height - 54, 'gas2');
-        } else if(this.gas <= 4){
-            this.gasDial.destroy();
-            this.gasDial = this.add.image(game.config.width/2, game.config.height - 54, 'gas3');
-        } else if(this.gas <= 6){
-            this.gasDial.destroy();
-            this.gasDial = this.add.image(game.config.width/2, game.config.height - 54, 'gas4');
-        } else if(this.gas >= 8){
-            this.gasDial.destroy();
-            this.gasDial = this.add.image(game.config.width/2, game.config.height - 54, 'gas5');
-        }
+        }        
     }
     //-end update()-------------------------------------------------------------
     //--------------------------------------------------------------------------
