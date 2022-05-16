@@ -34,6 +34,7 @@ class Play extends Phaser.Scene
         this.load.image("test", "./Assets/test.png");
         this.load.image("test1", "./Assets/test1.png");
         this.load.image("p", "./Assets/p.png");
+        this.load.image("outline", "./Assets/outline.png");
 
         // load spritesheet for death animation
         this.load.spritesheet
@@ -57,6 +58,7 @@ class Play extends Phaser.Scene
         // initializes play scene
         this.init = false;
 
+        
         // load soundtracks
         this.start = this.sound.add('start1')
         this.go1 = this.sound.add('go1')
@@ -92,7 +94,10 @@ class Play extends Phaser.Scene
                 this.add.image(this.grid[i][j].x, this.grid[i][j].y, 'test')
             }
         }
-        
+        this.outline = this.add.image(-100, -100, 'outline');
+        this.placeTower(2,3); // debug purposes
+        console.log(this.grid[2][3].h)
+
         //----------------------------------------------------------------------
         // add in the game objects
         // add player (p1)
@@ -103,7 +108,10 @@ class Play extends Phaser.Scene
             game.config.height/1.45, // y-coord
             "p", // texture
             0, // frame
-            10,
+            false, // left collision checker
+            false, // right collision checker
+            false, // up collision checker
+            false, // down collision checker
         ).setScale(0.5, 0.5).setOrigin(0, 0);
 
         // add player animations
@@ -128,7 +136,6 @@ class Play extends Phaser.Scene
         this.obstacles = [];
         this.zombies = [];
 
-        this.placeTower(2,3); // debug purposes
 
         // m is multiplier on how far zombie 2 is from zombie 1. Useful if we are moving roads
         var m = 93;
@@ -153,6 +160,7 @@ class Play extends Phaser.Scene
         // define keyboard keys
         keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -301,8 +309,12 @@ class Play extends Phaser.Scene
     //--------------------------------------------------------------------------
     update()
     {   
-        // generally updates every frame
-        // starts Start timer
+        // checks where in the grid the player is located at
+        this.tileX = Math.floor((this.player.x - 27)/50) + 1;
+        this.tileY = Math.floor((this.player.y - 24)/50) + 1;
+        
+        //console.log(this.tileX+","+this.tileY)
+        var j = this.tileX - 1;
         if(!this.init){
             if(!this.start.isPlaying & !this.checkpoint){
                 this.start.stop()       
@@ -332,23 +344,29 @@ class Play extends Phaser.Scene
         }
         if(!this.gameOver & this.init)
         {
-            // update tile sprite
             // update player
             this.player.update(this.p1Lives);
+            //this.checkCollision();
+            this.createOutline(this.tileX,this.tileY);
+            /*
+            for(var i = 0; i < game.config.width/50; i++){ // x axis
+                for(var j = 0; j < game.config.height/50; j++){ // y axis
+                    if(){
 
+                    }
+                }
+            }*/
+
+            if(Phaser.Input.Keyboard.JustDown(keySPACE)){
+                console.log("works");
+                this.placeTower(this.tileX,this.tileY);
+            }
+            
             // update zombies
             for(var i = 0; i < this.zombies.length; i++){
                 this.zombies[i].update(1, this.p1Lives);
             }
 
-            // check zombie collisions
-            for(var i = 0; i < this.zombies.length; i++){
-                if(this.checkCollision(this.player, this.zombies[i]))
-                {
-                    this.player.reset();
-                    this.zombieKill(this.zombies[i]);
-                }        
-            }
             // check if enemies overlap
             for(var i = 0; i < this.obstacles.length; i++){
                 for(var j = 0; j < this.zombies.length; j++){
@@ -365,7 +383,8 @@ class Play extends Phaser.Scene
     // COLLISIONS
     //--------------------------------------------------------------------------
     //
-    checkCollision(player, zombie)
+    
+    /*checkCollision(player, zombie)
     {
         // simple AABB bounds checking
         if
@@ -377,6 +396,24 @@ class Play extends Phaser.Scene
         ) return true;
 
         else return false;
+    }*/
+
+    checkCollision()
+    {
+        // simple AABB bounds checking
+        if(this.grid[this.tileX-1][this.tileY].h < 0){ // left side hitbox
+            console.log("works");
+            this.player.cl = true;
+        }/*
+        if(this.grid[this.tileX-1][this.tileY].h < 0){ // right side hitbox
+            Player.collideRight = true;
+        } 
+        if(this.grid[this.tileX-1][this.tileY].h < 0){ // upper hitbox
+            Player.collideUp = true;
+        }
+        if(this.grid[this.tileX-1][this.tileY].h < 0){ // lower hitbox
+            Player.collideDown = true;
+        }*/
     }
 
     checkOverlap(o1, o2)
@@ -422,9 +459,17 @@ class Play extends Phaser.Scene
                 0, // frame
                 50, // width
                 50, // length
-                0, // height (0 is passable, 1 can have items be thrown over it, 2 is completely impassable on ground, 3 is impassible mid air)
+                1, // height (0 is passable, 1 can have items be thrown over it, 2 is completely impassable on ground, 3 is impassible mid air)
         ).setScale(0.5, 0.5).setOrigin(0, 0);
         this.add.image(this.grid[i][j].x, this.grid[i][j].y, 'test1')
+    }
+
+    createOutline(x,y){ // creates outline for placing buildings
+        this.outline.destroy();
+        var X = 50*x+25;
+        var Y = 50*y+25;
+        this.outline = this.add.image(X, Y, 'outline');
+        this.outline.alpha = 0.25;
     }
     
     formatTime(ms)

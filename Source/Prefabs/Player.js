@@ -1,6 +1,6 @@
 class Player extends Phaser.GameObjects.Sprite
 {
-    constructor(scene, x, y, texture, frame)
+    constructor(scene, x, y, texture, frame, cl, cr, cu, cd)
     {
         super(scene, x, y, texture, frame);
 
@@ -9,32 +9,36 @@ class Player extends Phaser.GameObjects.Sprite
 
         // track the rockets firing status
         this.isFiring = false;
-        this.moveSpeed = 10; 
+        this.collideLeft = cl;
+        this.collideRight = cr;
+        this.collideUp = cu;
+        this.collideDown = cd;
     }
 
 
     update(speed)
     {
-        if (keyW.isDown && keyA.isDown &&  this.y >= 0 && this.x >= 0) {  //Northwest movement
-            this.x -= speed/2;
-            this.y -= speed/2;
-        } else if (keyW.isDown && keyD.isDown && this.y >= 0 && this.x <= game.config.width - 50) {  //Northeast movement
-            this.x += speed/2;
-            this.y -= speed/2;
-        } else if (keyS.isDown && keyD.isDown && this.y <= game.config.height - 50 && this.x <= game.config.width - 50) {  //Soutwest movement
-            this.x += speed/2;
-            this.y += speed/2;
-        } else if (keyS.isDown && keyA.isDown && this.y <= game.config.height - 50 && this.x >= 0) {  //Southeast movement
-            this.x -= speed/2;
-            this.y += speed/2;
+        
+        if (keyW.isDown && keyA.isDown && this.y >= 0 && this.x >= 0 && !this.cl && !this.cu) {  //Northwest movement
+            this.x -= speed*3/4;
+            this.y -= speed*3/4;
+        } else if (keyW.isDown && keyD.isDown && this.y >= 0 && this.x <= game.config.width - 50 && !this.cr && !this.cu) {  //Northeast movement
+            this.x += speed*3/4;
+            this.y -= speed*3/4;
+        } else if (keyS.isDown && keyD.isDown && this.y <= game.config.height - 50 && this.x <= game.config.width - 50 && !this.cr && !this.cd) {  //Soutwest movement
+            this.x += speed*3/4;
+            this.y += speed*3/4;
+        } else if (keyS.isDown && keyA.isDown && this.y <= game.config.height - 50 && this.x >= 0 && !this.cl && !this.cd) {  //Southeast movement
+            this.x -= speed*3/4;
+            this.y += speed*3/4;
         } else if(keyW.isDown && this.y >= 0) {  // left movement
-            this.y -= speed*(4/5);
+            this.y -= speed;
         } else if (keyA.isDown && this.x >= 0) {  //right movement
-            this.x -= speed*(4/5);
+            this.x -= speed;
         } else if (keyS.isDown && this.y <= game.config.height - 50) {  //right movement
-            this.y += speed*(4/5);
+            this.y += speed;
         } else if (keyD.isDown && this.x <= game.config.width - 50) {  //right movement
-            this.x += speed*(4/5);
+            this.x += speed;
         } 
 
     }

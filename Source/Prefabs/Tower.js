@@ -5,6 +5,7 @@ class Tower extends Phaser.GameObjects.Sprite
         super(scene, x, y, texture, frame, width, length, height, dmg);
         // add object to existing scene
         scene.add.existing(this);
+        this.h = height;
     }
 
     update(playerSpeed,xmin,xmax)
