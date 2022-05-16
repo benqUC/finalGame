@@ -12,6 +12,14 @@ let config =
     //     autoCenter: Phaser.Scale.CENTER_BOTH
     // },
 
+    physics: {
+        default: "arcade",
+        arcade: {
+          debug: true,
+          debugShowBody: true
+        }
+    },
+
     scene: [Menu, Tutorial, Play]
 };
 
