@@ -13,6 +13,7 @@ class Play extends Phaser.Scene
         this.load.image("car", "./Assets/car.png");
         this.load.image("road", "./Assets/Road-long.png");
         this.load.image("hud", "./Assets/hud.png");
+        this.load.image("target", "./Assets/ball.png")
 
         // load car atlas
         this.load.atlas("car_atlas", "./Assets/car-atlas.png", "./Assets/carmap.json");
@@ -302,6 +303,8 @@ class Play extends Phaser.Scene
         this.checkpoint = false;
         // 60s play clock
         scoreConfig.fixedWidth = 0;
+
+        this.reticle = this.add.sprite(game.config.width/2, game.config.height/2, 'target');
     }
     // end create() ------------------------------------------------------------
     //--------------------------------------------------------------------------
@@ -376,7 +379,11 @@ class Play extends Phaser.Scene
                     }        
                 }        
             }
-        }        
+        }       
+
+        this.reticle.x = this.input.mousePointer.x;
+        this.reticle.y = this.input.mousePointer.y;
+        // this.player.rotation = Phaser.Math.Angle.Between(player.x, player.y, reticle.x, reticle.y);
     }
     //-end update()-------------------------------------------------------------
     //--------------------------------------------------------------------------
