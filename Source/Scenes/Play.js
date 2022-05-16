@@ -10,38 +10,38 @@ class Play extends Phaser.Scene
     preload()
     {
         // load images/tile sprites
-        this.load.image("car", "./Assets/car.png");
-        this.load.image("road", "./Assets/Road-long.png");
-        this.load.image("hud", "./Assets/hud.png");
-        this.load.image("target", "./Assets/ball.png")
+        this.load.image("car", "./assets/car.png");
+        this.load.image("road", "./assets/Road-long.png");
+        this.load.image("hud", "./assets/hud.png");
+        this.load.image("target", "./assets/ball.png")
 
         // load car atlas
-        this.load.atlas("car_atlas", "./Assets/car-atlas.png", "./Assets/carmap.json");
+        this.load.atlas("car_atlas", "./assets/car-atlas.png", "./assets/carmap.json");
 
         // zombies
-        this.load.image("zombie", "./Assets/zombie.png");
+        this.load.image("zombie", "./assets/zombie.png");
 
         // obstacles
-        this.load.image("roadblock1", "./Assets/obstacles/bigRoadblock.png");
-        this.load.image("obstacle1", "./Assets/obstacles/obstacle01.png");
-        this.load.image("obstacle2", "./Assets/obstacles/obstacle02.png");
+        this.load.image("roadblock1", "./assets/obstacles/bigRoadblock.png");
+        this.load.image("obstacle1", "./assets/obstacles/obstacle01.png");
+        this.load.image("obstacle2", "./assets/obstacles/obstacle02.png");
 
         // soundtracks
-        this.load.audio("start1", "./Assets/bgm/start1.wav");
-        this.load.audio("go1", "./Assets/bgm/go1.OGG");
-        this.load.audio("go2", "./Assets/bgm/go2.wav");
-        this.load.audio("go3", "./Assets/bgm/go3.wav");
+        this.load.audio("start1", "./assets/bgm/start1.wav");
+        this.load.audio("go1", "./assets/bgm/go1.OGG");
+        this.load.audio("go2", "./assets/bgm/go2.wav");
+        this.load.audio("go3", "./assets/bgm/go3.wav");
 
-        this.load.image("test", "./Assets/test.png");
-        this.load.image("test1", "./Assets/test1.png");
-        this.load.image("p", "./Assets/p.png");
-        this.load.image("outline", "./Assets/outline.png");
+        this.load.image("test", "./assets/test.png");
+        this.load.image("test1", "./assets/test1.png");
+        this.load.image("p", "./assets/p.png");
+        this.load.image("outline", "./assets/outline.png");
 
         // load spritesheet for death animation
         this.load.spritesheet
         (
             "explosion",
-            "./Assets/explosion.png",
+            "./assets/explosion.png",
             {
                 frameWidth: 64,
                 frameHeight: 32,
