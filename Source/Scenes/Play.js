@@ -379,11 +379,13 @@ class Play extends Phaser.Scene
                     }        
                 }        
             }
+
+            this.reticle.x = this.input.mousePointer.x;
+            this.reticle.y = this.input.mousePointer.y;
+            // this.player.rotation = Phaser.Math.Angle.Between(player.x, player.y, reticle.x, reticle.y);
         }       
 
-        this.reticle.x = this.input.mousePointer.x;
-        this.reticle.y = this.input.mousePointer.y;
-        // this.player.rotation = Phaser.Math.Angle.Between(player.x, player.y, reticle.x, reticle.y);
+        
     }
     //-end update()-------------------------------------------------------------
     //--------------------------------------------------------------------------
