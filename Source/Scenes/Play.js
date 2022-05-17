@@ -113,7 +113,7 @@ class Play extends Phaser.Scene
             false, // right collision checker
             false, // up collision checker
             false, // down collision checker
-        ).setScale(0.5, 0.5).setOrigin(0, 0);
+        ).setScale(0.5, 0.5).setOrigin(.5,.5);
 
         // add player animations
         /*
@@ -259,8 +259,8 @@ class Play extends Phaser.Scene
         this.countdown = 3000;
         this.cdtLeft = this.add.text
         (
-            game.config.width/2 - 250,       // x-coord
-            game.config.height/2,         // y-coord
+            game.config.width/2 - 250, // x-coord
+            game.config.height/2, // y-coord
             "Get ready: " + this.formatTimeCountDown(this.countdown), // text to display
             countdownConfig // text style config object
         );
@@ -313,8 +313,8 @@ class Play extends Phaser.Scene
     update()
     {   
         // checks where in the grid the player is located at
-        this.tileX = Math.floor((this.player.x - 27)/50) + 1;
-        this.tileY = Math.floor((this.player.y - 24)/50) + 1;
+        this.tileX = Math.floor((this.player.x)/50); // 27
+        this.tileY = Math.floor((this.player.y)/50); // 24
         
         //console.log(this.tileX+","+this.tileY)
         var j = this.tileX - 1;
@@ -382,10 +382,12 @@ class Play extends Phaser.Scene
 
             this.reticle.x = this.input.mousePointer.x;
             this.reticle.y = this.input.mousePointer.y;
-            this.player.rotation = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.reticle.x, this.reticle.y);
+            this.pX = this.player.x;
+            this.pY = this.player.y; // 20
+            this.player.rotation = Phaser.Math.Angle.Between(this.pX, this.pY, this.reticle.x, this.reticle.y);
             // this.player.rotation = Phaser.Math.Angle.Between(player.x, player.y, reticle.x, reticle.y);
-        }       
-
+            console.log(this.reticle.x + ',' + this.reticle.y);
+        }
         
     }
     //-end update()-------------------------------------------------------------
