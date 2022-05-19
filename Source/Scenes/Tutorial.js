@@ -11,26 +11,26 @@ class Tutorial extends Phaser.Scene
     preload()
     {
         // load audio files
-        this.load.audio("sfx_select", "./Assets/blip_select12.wav");
-        this.load.audio("sfx_explosion", "./Assets/explosion38.wav");
+        this.load.audio("sfx_select", "./assets/blip_select12.wav");
+        this.load.audio("sfx_explosion", "./assets/explosion38.wav");
         
         //load bgm
-        this.load.audio("bgm1_getReady", "./Assets/bgm/bgm1_getReady.wav");
-        this.load.audio("bgm1_getReadyLoop", "./Assets/bgm/bgm1_getReadyLoop.wav");
-        this.load.audio("go1", "./Assets/bgm/go1.wav");
+        this.load.audio("bgm1_getReady", "./assets/bgm/bgm1_getReady.wav");
+        this.load.audio("bgm1_getReadyLoop", "./assets/bgm/bgm1_getReadyLoop.wav");
+        this.load.audio("go1", "./assets/bgm/go1.wav");
 
         // load images/tile sprites
-        this.load.image("car", "./Assets/car.png");
-        this.load.image("road", "./Assets/Road-long.png");
-        this.load.image("hud", "./Assets/hud.png");
+        this.load.image("car", "./assets/car.png");
+        this.load.image("road", "./assets/Road-long.png");
+        this.load.image("hud", "./assets/hud.png");
 
         // zombies
-        this.load.image("zombie", "./Assets/zombie.png");
+        this.load.image("zombie", "./assets/zombie.png");
 
         // obstacles
-        this.load.image("roadblock1", "./Assets/obstacles/bigRoadblock.png");
-        this.load.image("obstacle1", "./Assets/obstacles/obstacle01.png");
-        this.load.image("obstacle2", "./Assets/obstacles/obstacle02.png");
+        this.load.image("roadblock1", "./assets/obstacles/bigRoadblock.png");
+        this.load.image("obstacle1", "./assets/obstacles/obstacle01.png");
+        this.load.image("obstacle2", "./assets/obstacles/obstacle02.png");
  
     }
     //-end preload()------------------------------------------------------------
