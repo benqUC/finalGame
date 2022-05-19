@@ -11,11 +11,11 @@ class Menu extends Phaser.Scene
     preload()
     {
         // load audio files
-        this.load.audio("sfx_select", "./Assets/blip_select12.wav");
-        this.load.audio("sfx_explosion", "./Assets/explosion38.wav");
+        this.load.audio("sfx_select", "./assets/blip_select12.wav");
+        this.load.audio("sfx_explosion", "./assets/explosion38.wav");
         
-        this.load.audio("bgm1", "./Assets/bgm/bgm1.wav");
-        this.load.audio("bgm1_loop", "./Assets/bgm/bgm1_loop.wav");
+        this.load.audio("bgm1", "./assets/bgm/bgm1.wav");
+        this.load.audio("bgm1_loop", "./assets/bgm/bgm1_loop.wav");
         
     }
     //-end preload()------------------------------------------------------------
