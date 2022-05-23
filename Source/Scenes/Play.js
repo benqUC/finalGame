@@ -13,7 +13,8 @@ class Play extends Phaser.Scene
         this.load.image("car", "./assets/car.png");
         this.load.image("road", "./assets/Road-long.png");
         this.load.image("hud", "./assets/hud.png");
-        this.load.image("target", "./assets/ball.png")
+        this.load.image("target", "./assets/ball.png");
+        this.load.image('rocket', './assets/rocket.png');
 
         // load car atlas
         this.load.atlas("car_atlas", "./assets/car-atlas.png", "./assets/carmap.json");
@@ -58,7 +59,6 @@ class Play extends Phaser.Scene
     {
         // initializes play scene
         this.init = false;
-
         
         // load soundtracks
         this.start = this.sound.add('start1')
@@ -161,6 +161,7 @@ class Play extends Phaser.Scene
         // define keyboard keys
         keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -304,7 +305,13 @@ class Play extends Phaser.Scene
         // 60s play clock
         scoreConfig.fixedWidth = 0;
 
+        // reticle creation
         this.reticle = this.add.sprite(game.config.width/2, game.config.height/2, 'target');
+
+        // add Bullet 
+        this.Bullet = this.add.sprite(game.config.width/2, game.config.height/2, 'rocket');
+
+        this.firing = false;
     }
     // end create() ------------------------------------------------------------
     //--------------------------------------------------------------------------
@@ -386,7 +393,20 @@ class Play extends Phaser.Scene
             this.pY = this.player.y; // 20
             this.player.rotation = Phaser.Math.Angle.Between(this.pX, this.pY, this.reticle.x, this.reticle.y);
             // this.player.rotation = Phaser.Math.Angle.Between(player.x, player.y, reticle.x, reticle.y);
-            console.log(this.reticle.x + ',' + this.reticle.y);
+            // console.log(this.reticle.x + ',' + this.reticle.y);
+            if(Phaser.Input.Keyboard.JustDown(keyF) && !this.isFiring){
+                console.log("testing");
+                this.isFiring = true;
+                this.Bullet.rotation = Phaser.Math.Angle.Between(this.Bullet.x, this.Bullet.y, this.reticle.x, this.reticle.y);
+                // this.Bullet.x = this.input.mousePointer.x;
+                // this.Bullet.y = this.input.mousePointer.y;
+            }
+            // if fired, move up
+            if(this.isFiring) {
+                console.log("fired");
+
+                this.Bullet.y -= 20;
+            }
         }
         
     }
