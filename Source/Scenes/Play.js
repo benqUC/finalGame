@@ -21,11 +21,13 @@ class Play extends Phaser.Scene
 
         // zombies
         this.load.image("zombie", "./assets/zombie.png");
+        this.load.image("candyCorn", "./assets/gameEnemy.png");
 
         // obstacles
         this.load.image("roadblock1", "./assets/obstacles/bigRoadblock.png");
         this.load.image("obstacle1", "./assets/obstacles/obstacle01.png");
         this.load.image("obstacle2", "./assets/obstacles/obstacle02.png");
+        this.load.image("block", "./assets/block.png");
 
         // soundtracks
         this.load.audio("start1", "./assets/bgm/start1.wav");
@@ -312,6 +314,18 @@ class Play extends Phaser.Scene
         this.Bullet = this.add.sprite(game.config.width/2, game.config.height/2, 'rocket');
 
         this.firing = false;
+
+        this.matter.world.setBounds();
+
+        var canDrag = this.matter.world.nextGroup();
+
+        this.matter.add.image(100, 100, 'block', null, { chamfer: 16 }).setBounce(0.9).setCollisionGroup(canDrag);
+
+        var noDrag = this.matter.world.nextGroup();
+
+        this.matter.add.image(200, 100, 'candyCorn', null, { chamfer: 16 }).setBounce(0.9).setCollisionGroup(noDrag);
+
+        this.matter.add.mouseSpring({ length: 1, stiffness: 0.6, collisionFilter: { group: canDrag } });
     }
     // end create() ------------------------------------------------------------
     //--------------------------------------------------------------------------
@@ -404,6 +418,7 @@ class Play extends Phaser.Scene
             // if fired, move up
             if(this.isFiring) {
                 console.log("fired");
+                this.Bullet.x = this.reticle.x;
 
                 this.Bullet.y -= 20;
             }

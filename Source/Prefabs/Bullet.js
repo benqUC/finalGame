@@ -17,7 +17,7 @@ class Bullet extends Phaser.GameObjects.Sprite {
             console.log("testing");
             // this.sfxRocket.play();
         }
-        // if fired, move up
+        // // if fired, move up
         // if(this.isFiring) {
         //     this.y -= this.moveSpeed;
         // }

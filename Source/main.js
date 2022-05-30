@@ -13,10 +13,16 @@ let config =
     // },
 
     physics: {
-        default: "arcade",
-        arcade: {
-          debug: true,
-          debugShowBody: true
+        // default: "arcade",
+        // arcade: {
+        //   debug: true,
+        //   debugShowBody: true
+        // }
+        default: 'matter',
+        matter: {
+            gravity: { y: 0 },
+            debug: true,
+            debugShowBody: true
         }
     },
 
