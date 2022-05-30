@@ -36,7 +36,7 @@ class Play extends Phaser.Scene
         this.load.audio("go3", "./assets/bgm/go3.wav");
 
         this.load.image("test", "./assets/test.png");
-        this.load.image("test1", "./assets/test1.png");
+        this.load.image("test1", "./assets/temptower.png");
         this.load.image("p", "./assets/p.png");
         this.load.image("outline", "./assets/outline.png");
 
