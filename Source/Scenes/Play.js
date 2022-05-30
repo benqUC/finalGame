@@ -380,11 +380,6 @@ class Play extends Phaser.Scene
                     }
                 }
             }*/
-
-            if(Phaser.Input.Keyboard.JustDown(keySPACE)){
-                console.log("works");
-                this.placeTower(this.tileX,this.tileY);
-            }
             
             // update zombies
             for(var i = 0; i < this.zombies.length; i++){
@@ -403,10 +398,6 @@ class Play extends Phaser.Scene
 
             this.reticle.x = this.input.mousePointer.x;
             this.reticle.y = this.input.mousePointer.y;
-            this.pX = this.player.x;
-            this.pY = this.player.y; // 20
-            this.player.rotation = Phaser.Math.Angle.Between(this.pX, this.pY, this.reticle.x, this.reticle.y);
-            // this.player.rotation = Phaser.Math.Angle.Between(player.x, player.y, reticle.x, reticle.y);
             // console.log(this.reticle.x + ',' + this.reticle.y);
             if(Phaser.Input.Keyboard.JustDown(keyF) && !this.isFiring){
                 console.log("testing");
@@ -422,6 +413,19 @@ class Play extends Phaser.Scene
 
                 this.Bullet.y -= 20;
             }
+
+            if(this.canPlace()){
+                this.input.on('pointerdown', () => this.placeTower(this.reticle.x, this.reticle.y));
+            }
+
+            console.log(this.canPlace())
+
+            this.player.rotation = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.reticle.x, this.reticle.y);
+
+            //var x = (this.player.x - this.reticle.x)^2;
+            //var y = (this.player.y - this.reticle.y)^2;
+
+            //console.log(x + ' , ' + y + ' : ' + this.tileX + ' , ' + this.tileY);
         }
         
     }
@@ -463,6 +467,26 @@ class Play extends Phaser.Scene
         }*/
     }
 
+    
+
+    canPlace(){
+        var x = Math.floor(this.reticle.x/50);
+        var y = Math.floor(this.reticle.y/50);
+        
+        if(this.grid[x][y] == this.grid[this.tileX - 1][this.tileY] ||               
+            this.grid[x][y] == this.grid[this.tileX + 1][this.tileY] ||               
+            this.grid[x][y] == this.grid[this.tileX][this.tileY - 1] ||               
+            this.grid[x][y] == this.grid[this.tileX][this.tileY + 1] ||               
+            this.grid[x][y] == this.grid[this.tileX - 1][this.tileY - 1] ||               
+            this.grid[x][y] == this.grid[this.tileX - 1][this.tileY + 1] ||               
+            this.grid[x][y] == this.grid[this.tileX + 1][this.tileY - 1] ||               
+            this.grid[x][y] == this.grid[this.tileX + 1][this.tileY + 1]){
+                return true;
+        } else {
+            return false;
+        }
+    }
+
     checkOverlap(o1, o2)
     {
         // simple AABB bounds checking
@@ -497,7 +521,9 @@ class Play extends Phaser.Scene
         }
     }
 
-    placeTower(i,j){
+    placeTower(x,y){
+        var i = Math.floor(x/50);
+        var j = Math.floor(y/50);
         this.grid[i][j] = new Tower(
                 this, // scene
                 25 + 50 * i, // x-coord

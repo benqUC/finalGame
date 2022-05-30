@@ -16,9 +16,11 @@ class Player extends Phaser.GameObjects.Sprite
     }
 
 
-    update(speed)
+    update(speed, grid)
     {
-        
+        this.tileX = Math.floor((this.x)/50); // 27
+        this.tileY = Math.floor((this.y)/50); // 24
+
         if (keyW.isDown && keyA.isDown && this.y >= 0 && this.x >= 0 && !this.cl && !this.cu) {  //Northwest movement
             this.x -= speed*3/4;
             this.y -= speed*3/4;
