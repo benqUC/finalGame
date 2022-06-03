@@ -27,7 +27,7 @@ class Play extends Phaser.Scene
         this.load.image("roadblock1", "./assets/obstacles/bigRoadblock.png");
         this.load.image("obstacle1", "./assets/obstacles/obstacle01.png");
         this.load.image("obstacle2", "./assets/obstacles/obstacle02.png");
-        this.load.image("block", "./assets/block.png");
+        this.load.image("block", "./assets/gameBox.png");
 
         // soundtracks
         this.load.audio("start1", "./assets/bgm/start1.wav");
@@ -35,10 +35,11 @@ class Play extends Phaser.Scene
         this.load.audio("go2", "./assets/bgm/go2.wav");
         this.load.audio("go3", "./assets/bgm/go3.wav");
 
-        this.load.image("test", "./assets/test.png");
-        this.load.image("test1", "./assets/temptower.png");
+        this.load.image("test", "./assets/gameTile.png");
+        this.load.image("test1", "./assets/gameTower.png");
         this.load.image("p", "./assets/gamePlayer.png");
-        this.load.image("outline", "./assets/outline.png");
+        this.load.image("outline", "./assets/gameOutline.png");
+        this.load.image("baby", "./assets/gameBaby.png");
 
         // load spritesheet for death animation
         this.load.spritesheet
