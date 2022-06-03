@@ -19,22 +19,29 @@ class Play extends Phaser.Scene
         // load car atlas
         this.load.atlas("car_atlas", "./assets/car-atlas.png", "./assets/carmap.json");
 
-        // zombies
+        // load enemies
         this.load.image("zombie", "./assets/zombie.png");
         this.load.image("candyCorn", "./assets/gameEnemy.png");
 
-        // obstacles
+        // load environment
         this.load.image("roadblock1", "./assets/obstacles/bigRoadblock.png");
         this.load.image("obstacle1", "./assets/obstacles/obstacle01.png");
         this.load.image("obstacle2", "./assets/obstacles/obstacle02.png");
         this.load.image("block", "./assets/gameBox.png");
+        this.load.image("pathHorizontal", "./assets/gamePathHorizontal.png");
+        this.load.image("pathVertical", "./assets/gamePathVertical.png");
+        this.load.image("corner1", "./assets/gamePathCorner1.png");
+        this.load.image("corner2", "./assets/gamePathCorner2.png");
+        this.load.image("corner3", "./assets/gamePathCorner3.png");
+        this.load.image("corner4", "./assets/gamePathCorner4.png");
 
-        // soundtracks
+        // load sound
         this.load.audio("start1", "./assets/bgm/start1.wav");
         this.load.audio("go1", "./assets/bgm/go1.OGG");
         this.load.audio("go2", "./assets/bgm/go2.wav");
         this.load.audio("go3", "./assets/bgm/go3.wav");
 
+        // load player
         this.load.image("test", "./assets/gameTile.png");
         this.load.image("test1", "./assets/gameTower.png");
         this.load.image("p", "./assets/gamePlayer.png");
