@@ -37,7 +37,7 @@ class Play extends Phaser.Scene
 
         this.load.image("test", "./assets/test.png");
         this.load.image("test1", "./assets/temptower.png");
-        this.load.image("p", "./assets/p.png");
+        this.load.image("p", "./assets/gamePlayer.png");
         this.load.image("outline", "./assets/outline.png");
 
         // load spritesheet for death animation
