@@ -13,7 +13,7 @@ class Play extends Phaser.Scene
         this.load.image("car", "./assets/car.png");
         this.load.image("road", "./assets/Road-long.png");
         this.load.image("hud", "./assets/hud.png");
-        this.load.image("target", "./assets/ball.png");
+        this.load.image("target", "./assets/gameFist.png");
         this.load.image('rocket', './assets/rocket.png');
 
         // load car atlas
@@ -42,9 +42,9 @@ class Play extends Phaser.Scene
         this.load.audio("go3", "./assets/bgm/go3.wav");
 
         // load player
-        this.load.image("test", "./assets/gameTile.png");
-        this.load.image("test1", "./assets/gameTower.png");
-        this.load.image("p", "./assets/gamePlayer.png");
+        this.load.image("tile", "./assets/gameTile.png");
+        this.load.image("tower", "./assets/gameTower.png");
+        this.load.image("player", "./assets/gamePlayer.png");
         this.load.image("outline", "./assets/gameOutline.png");
         this.load.image("baby", "./assets/gameBaby.png");
 
@@ -96,13 +96,13 @@ class Play extends Phaser.Scene
                     this, // scene
                     25 + 50 * i, // x-coord
                     25 + 50 * j, // y-coord
-                    "test", // texture
+                    "tile", // texture
                     0, // frame
                     50, // width
                     50, // length
                     0, // height (0 is passable, 1 can have items be thrown over it, 2 is completely impassable on ground, 3 is impassible mid air)
                 ).setScale(0.5, 0.5).setOrigin(0, 0);
-                this.add.image(this.grid[i][j].x, this.grid[i][j].y, 'test')
+                this.add.image(this.grid[i][j].x, this.grid[i][j].y, 'tile')
             }
         }
         this.outline = this.add.image(-100, -100, 'outline');
@@ -117,7 +117,7 @@ class Play extends Phaser.Scene
             this, // scene
             game.config.width/2, // x-coord
             game.config.height/1.45, // y-coord
-            "p", // texture
+            "player", // texture
             0, // frame
             false, // left collision checker
             false, // right collision checker
@@ -536,13 +536,13 @@ class Play extends Phaser.Scene
                 this, // scene
                 25 + 50 * i, // x-coord
                 25 + 50 * j, // y-coord
-                "test1", // texture
+                "tower", // texture
                 0, // frame
                 50, // width
                 50, // length
                 1, // height (0 is passable, 1 can have items be thrown over it, 2 is completely impassable on ground, 3 is impassible mid air)
         ).setScale(0.5, 0.5).setOrigin(0, 0);
-        this.add.image(this.grid[i][j].x, this.grid[i][j].y, 'test1')
+        this.add.image(this.grid[i][j].x, this.grid[i][j].y, 'tower')
     }
 
     createOutline(x,y){ // creates outline for placing buildings
