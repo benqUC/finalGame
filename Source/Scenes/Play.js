@@ -13,32 +13,40 @@ class Play extends Phaser.Scene
         this.load.image("car", "./assets/car.png");
         this.load.image("road", "./assets/Road-long.png");
         this.load.image("hud", "./assets/hud.png");
-        this.load.image("target", "./assets/ball.png");
+        this.load.image("target", "./assets/gameFist.png");
         this.load.image('rocket', './assets/rocket.png');
 
         // load car atlas
         this.load.atlas("car_atlas", "./assets/car-atlas.png", "./assets/carmap.json");
 
-        // zombies
+        // load enemies
         this.load.image("zombie", "./assets/zombie.png");
         this.load.image("candyCorn", "./assets/gameEnemy.png");
 
-        // obstacles
+        // load environment
         this.load.image("roadblock1", "./assets/obstacles/bigRoadblock.png");
         this.load.image("obstacle1", "./assets/obstacles/obstacle01.png");
         this.load.image("obstacle2", "./assets/obstacles/obstacle02.png");
-        this.load.image("block", "./assets/block.png");
+        this.load.image("block", "./assets/gameBox.png");
+        this.load.image("pathHorizontal", "./assets/gamePathHorizontal.png");
+        this.load.image("pathVertical", "./assets/gamePathVertical.png");
+        this.load.image("corner1", "./assets/gamePathCorner1.png");
+        this.load.image("corner2", "./assets/gamePathCorner2.png");
+        this.load.image("corner3", "./assets/gamePathCorner3.png");
+        this.load.image("corner4", "./assets/gamePathCorner4.png");
 
-        // soundtracks
+        // load sound
         this.load.audio("start1", "./assets/bgm/start1.wav");
         this.load.audio("go1", "./assets/bgm/go1.OGG");
         this.load.audio("go2", "./assets/bgm/go2.wav");
         this.load.audio("go3", "./assets/bgm/go3.wav");
 
-        this.load.image("test", "./assets/test.png");
-        this.load.image("test1", "./assets/temptower.png");
-        this.load.image("p", "./assets/gamePlayer.png");
-        this.load.image("outline", "./assets/outline.png");
+        // load player
+        this.load.image("tile", "./assets/gameTile.png");
+        this.load.image("tower", "./assets/gameTower.png");
+        this.load.image("player", "./assets/gamePlayer.png");
+        this.load.image("outline", "./assets/gameOutline.png");
+        this.load.image("baby", "./assets/gameBaby.png");
 
         // load spritesheet for death animation
         this.load.spritesheet
@@ -88,13 +96,13 @@ class Play extends Phaser.Scene
                     this, // scene
                     25 + 50 * i, // x-coord
                     25 + 50 * j, // y-coord
-                    "test", // texture
+                    "tile", // texture
                     0, // frame
                     50, // width
                     50, // length
                     0, // height (0 is passable, 1 can have items be thrown over it, 2 is completely impassable on ground, 3 is impassible mid air)
                 ).setScale(0.5, 0.5).setOrigin(0, 0);
-                this.add.image(this.grid[i][j].x, this.grid[i][j].y, 'test')
+                this.add.image(this.grid[i][j].x, this.grid[i][j].y, 'tile')
             }
         }
         this.outline = this.add.image(-100, -100, 'outline');
@@ -109,7 +117,7 @@ class Play extends Phaser.Scene
             this, // scene
             game.config.width/2, // x-coord
             game.config.height/1.45, // y-coord
-            "p", // texture
+            "player", // texture
             0, // frame
             false, // left collision checker
             false, // right collision checker
@@ -528,13 +536,13 @@ class Play extends Phaser.Scene
                 this, // scene
                 25 + 50 * i, // x-coord
                 25 + 50 * j, // y-coord
-                "test1", // texture
+                "tower", // texture
                 0, // frame
                 50, // width
                 50, // length
                 1, // height (0 is passable, 1 can have items be thrown over it, 2 is completely impassable on ground, 3 is impassible mid air)
         ).setScale(0.5, 0.5).setOrigin(0, 0);
-        this.add.image(this.grid[i][j].x, this.grid[i][j].y, 'test1')
+        this.add.image(this.grid[i][j].x, this.grid[i][j].y, 'tower')
     }
 
     createOutline(x,y){ // creates outline for placing buildings

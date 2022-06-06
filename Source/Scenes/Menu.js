@@ -10,12 +10,13 @@ class Menu extends Phaser.Scene
     //--------------------------------------------------------------------------
     preload()
     {
-        // load audio files
-        this.load.audio("sfx_select", "./assets/blip_select12.wav");
-        this.load.audio("sfx_explosion", "./assets/explosion38.wav");
-        
+        // load sfx
+        this.load.audio("wrapper2", "./assets/wrapper2.mp3");
+        // load music
         this.load.audio("bgm1", "./assets/bgm/bgm1.wav");
         this.load.audio("bgm1_loop", "./assets/bgm/bgm1_loop.wav");
+        // load background
+        this.load.image("title", "./assets/gameTitle.png");
         
     }
     //-end preload()------------------------------------------------------------
@@ -38,41 +39,13 @@ class Menu extends Phaser.Scene
             fixedWidth: 0
         };
 
-        // meny text positioning
-        let centerX = game.config.width/2;
-        let centerY = game.config.height/2;
-        let textSpacer = 64;
-
-        // show menu text
-        this.menu = this.add.text
-        (
-            centerX, // x-coord
-            centerY - textSpacer, // y-coord
-            "(enter final game title)", // initial text to be displayed
-            menuConfig // configuration object
-        ).setOrigin(0.5);
-
-        this.menu2 = this.add.text
-        (
-            centerX,
-            centerY + textSpacer,
-            "Press (E) for Easy or (H) for Hard",
-            menuConfig
-        ).setOrigin(0.5);
+        // add background
+        this.title = this.add.tileSprite(0, 0, 0, 0, 'title').setOrigin(0, 0);
 
         // menu music plays
         // this.bgm1 = ['bgm1','bgm1_loop','bgm1_getReady']
         this.music = this.sound.add('bgm1');
         this.music.setLoop(true);
-        
-        this.cover = this.add.rectangle(0, 0, 9000, 9000, '#000021');
-        this.coverText = this.add.text
-        (
-            centerX,
-            centerY + textSpacer,
-            "Press Space to continue",
-            menuConfig
-        ).setOrigin(0.5);
 
         // define input keys
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -88,52 +61,8 @@ class Menu extends Phaser.Scene
         if(this.initialize1 == false){
             if(Phaser.Input.Keyboard.JustDown(keySPACE))
             {
-                // this is so we force user interaction to work around google autoplay
-                this.cover.destroy();
-                this.coverText.destroy();
-                // menu music plays
-                this.music.play();
-                this.initialize1 = true;
-            }
-        }
-        if(this.initialize1 == true){
-            if(this.music.isPlaying == false){ 
-                if(this.musicLoop.isPlaying == false){
-                    this.musicLoop.play();              
-                }
-            }
-            
-            if(Phaser.Input.Keyboard.JustDown(keyE))
-            {
-                // configuration settings for easy mode
-                game.settings =
-                {
-                    playerSpeed: 4,
-                    fastzombieSpeed: 4,
-                    gameTimer: 1320000,
-                    gasTimer: 0,
-                    gas: 8,
-                    countdown: 0
-                }
-                this.sound.play("sfx_select");
                 this.music.stop();
-                this.scene.start("tutorialScene");
-            }
-    
-            // configuration settings for hard mode
-            if(Phaser.Input.Keyboard.JustDown(keyH))
-            {
-                game.settings =
-                {
-                    playerSpeed: 4,
-                    fastzombieSpeed: 4,
-                    gameTimer: 1320000,                
-                    gasTimer: 0,
-                    gas: 4,
-                    countdown: 0
-                }
-                this.sound.play("sfx_select");
-                this.music.stop();
+                this.sound.play("wrapper2");
                 this.scene.start("tutorialScene");
             }
         }
