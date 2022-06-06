@@ -315,9 +315,6 @@ class Play extends Phaser.Scene
         // 60s play clock
         scoreConfig.fixedWidth = 0;
 
-        // reticle creation
-        this.reticle = this.add.sprite(game.config.width/2, game.config.height/2, 'target');
-
         // add Bullet 
         this.Bullet = this.add.sprite(game.config.width/2, game.config.height/2, 'rocket');
 
@@ -334,6 +331,11 @@ class Play extends Phaser.Scene
         this.matter.add.image(200, 100, 'candyCorn', null, { chamfer: 16 }).setBounce(0.9).setCollisionGroup(noDrag);
 
         this.matter.add.mouseSpring({ length: 1, stiffness: 0.6, collisionFilter: { group: canDrag } });
+
+        // reticle creation
+        this.reticle = this.add.sprite(game.config.width/2, game.config.height/2, 'target');
+
+        this.rangeDist = Phaser.Math.Distance.BetweenPoints(this.input.mousePointer, this.player);
     }
     // end create() ------------------------------------------------------------
     //--------------------------------------------------------------------------
@@ -404,29 +406,39 @@ class Play extends Phaser.Scene
                 }        
             }
 
-            this.reticle.x = this.input.mousePointer.x;
-            this.reticle.y = this.input.mousePointer.y;
+            
+                
+            // } else if (this.rangeDist > 50) {
+            //     this.reticle.x = 50;
+            //     this.reticle.y = 50;
+            //     // this.rangeDist = 50;
+            // }
+
             // console.log(this.reticle.x + ',' + this.reticle.y);
             if(Phaser.Input.Keyboard.JustDown(keyF) && !this.isFiring){
                 console.log("testing");
                 this.isFiring = true;
-                this.Bullet.rotation = Phaser.Math.Angle.Between(this.Bullet.x, this.Bullet.y, this.reticle.x, this.reticle.y);
-                // this.Bullet.x = this.input.mousePointer.x;
-                // this.Bullet.y = this.input.mousePointer.y;
             }
             // if fired, move up
             if(this.isFiring) {
                 console.log("fired");
-                this.Bullet.x = this.reticle.x;
 
-                this.Bullet.y -= 20;
+                
+                // this.Bullet.x = this.reticle.x;
+
+                this.Bullet.y -= 1;
             }
+
+            this.reticle.x = this.input.mousePointer.x;
+            this.reticle.y = this.input.mousePointer.y;
 
             if(this.canPlace()){
                 this.input.on('pointerdown', () => this.placeTower(this.reticle.x, this.reticle.y));
             }
 
             console.log(this.canPlace())
+
+            this.Bullet.rotation = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.reticle.x, this.reticle.y);
 
             this.player.rotation = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.reticle.x, this.reticle.y);
 
@@ -481,18 +493,18 @@ class Play extends Phaser.Scene
         var x = Math.floor(this.reticle.x/50);
         var y = Math.floor(this.reticle.y/50);
         
-        if(this.grid[x][y] == this.grid[this.tileX - 1][this.tileY] ||               
-            this.grid[x][y] == this.grid[this.tileX + 1][this.tileY] ||               
-            this.grid[x][y] == this.grid[this.tileX][this.tileY - 1] ||               
-            this.grid[x][y] == this.grid[this.tileX][this.tileY + 1] ||               
-            this.grid[x][y] == this.grid[this.tileX - 1][this.tileY - 1] ||               
-            this.grid[x][y] == this.grid[this.tileX - 1][this.tileY + 1] ||               
-            this.grid[x][y] == this.grid[this.tileX + 1][this.tileY - 1] ||               
-            this.grid[x][y] == this.grid[this.tileX + 1][this.tileY + 1]){
-                return true;
-        } else {
-            return false;
-        }
+        // if(this.grid[x][y] == this.grid[this.tileX - 1][this.tileY] ||               
+        //     this.grid[x][y] == this.grid[this.tileX + 1][this.tileY] ||               
+        //     this.grid[x][y] == this.grid[this.tileX][this.tileY - 1] ||               
+        //     this.grid[x][y] == this.grid[this.tileX][this.tileY + 1] ||               
+        //     this.grid[x][y] == this.grid[this.tileX - 1][this.tileY - 1] ||               
+        //     this.grid[x][y] == this.grid[this.tileX - 1][this.tileY + 1] ||               
+        //     this.grid[x][y] == this.grid[this.tileX + 1][this.tileY - 1] ||               
+        //     this.grid[x][y] == this.grid[this.tileX + 1][this.tileY + 1]){
+        //         return true;
+        // } else {
+        //     return false;
+        // }
     }
 
     checkOverlap(o1, o2)
