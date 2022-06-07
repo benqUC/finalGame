@@ -1,6 +1,6 @@
 {
     "frames": {
-        "player_walk_001": {
+        "idle1": {
             "frame": {
                 "x": 0,
                 "y": 0,
@@ -20,7 +20,7 @@
                 "h": 100
             }
         },
-        "player_walk_002": {
+        "walk1": {
             "frame": {
                 "x": 100,
                 "y": 0,
@@ -40,7 +40,7 @@
                 "h": 100
             }
         },
-        "player_idle_001": {
+        "walk2": {
             "frame": {
                 "x": 200,
                 "y": 0,
@@ -60,7 +60,7 @@
                 "h": 100
             }
         },
-        "player_walk_003": {
+        "walk3": {
             "frame": {
                 "x": 300,
                 "y": 0,
@@ -80,7 +80,7 @@
                 "h": 100
             }
         },
-        "player_walk_004": {
+        "walk4": {
             "frame": {
                 "x": 400,
                 "y": 0,

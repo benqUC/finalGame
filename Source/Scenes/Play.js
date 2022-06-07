@@ -17,7 +17,7 @@ class Play extends Phaser.Scene
         this.load.image('rocket', './assets/rocket.png');
 
         // load car atlas
-        this.load.atlas("car_atlas", "./assets/car-atlas.png", "./assets/carmap.json");
+        this.load.atlas("player_atlas", "./assets/gamePlayerAtlas.png", "./assets/playermap.json");
 
         // load enemies
         this.load.image("zombie", "./assets/zombie.png");
@@ -117,7 +117,7 @@ class Play extends Phaser.Scene
             this, // scene
             game.config.width/2, // x-coord
             game.config.height/1.45, // y-coord
-            "player", // texture
+            "player_atlas", // texture
             0, // frame
             false, // left collision checker
             false, // right collision checker
@@ -126,22 +126,29 @@ class Play extends Phaser.Scene
         ).setScale(0.5, 0.5).setOrigin(.5,.5);
 
         // add player animations
-        /*
         this.anims.create({
-            key: 'car_anim',
-            frames: this.anims.generateFrameNames('car_atlas', {
-                prefix: 'sprite',
+            key: 'player_walk',
+            frames: this.anims.generateFrameNames('player_atlas', {
+                prefix: 'walk',
                 start: 1,
-                end: 6,
+                end: 4,
                 suffix: '',
             }),
             frameRate: 12,
             repeat: -1,
         });
 
-        // play animation
-        this.player.play("car_anim");
-        */
+        this.anims.create({
+            key: 'player_idle',
+            frames: this.anims.generateFrameNames('player_atlas', {
+                prefix: 'idle',
+                start: 1,
+                end: 1,
+                suffix: '',
+            }),
+            frameRate: 12,
+            repeat: -1,
+        });
 
         // array of obstacles and zombies
         this.obstacles = [];
@@ -180,7 +187,6 @@ class Play extends Phaser.Scene
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-
 
         //----------------------------------------------------------------------
         // add the animations
@@ -343,6 +349,23 @@ class Play extends Phaser.Scene
     //--------------------------------------------------------------------------
     update()
     {   
+        // play animations when player is moving
+        if (keyW.isDown) {
+            this.player.play("player_walk", true);
+        }
+        else if (keyS.isDown) {
+            this.player.play("player_walk", true);
+        }
+        else if (keyA.isDown) {
+            this.player.play("player_walk", true);
+        }
+        else if (keyD.isDown) {
+            this.player.play("player_walk", true);
+        }
+        else {
+            this.player.play("player_idle", true);
+        }
+
         // checks where in the grid the player is located at
         this.tileX = Math.floor((this.player.x)/50); // 27
         this.tileY = Math.floor((this.player.y)/50); // 24
