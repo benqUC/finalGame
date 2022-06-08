@@ -106,11 +106,6 @@ class Play extends Phaser.Scene
             }
         }
         this.outline = this.add.image(-100, -100, 'outline');
-        this.placeTower(2,3); // debug purposes
-        console.log(this.grid[2][3].h)
-
-        
-        
 
         //----------------------------------------------------------------------
         // add in the game objects
@@ -157,7 +152,7 @@ class Play extends Phaser.Scene
         this.obstacles = [];
         this.enemies = [];
 
-
+        this.waveLength = 5;
         // m is multiplier on how far enemy 2 is from enemy 1. Useful if we are moving roads
         var m = 93;
         // min/max value on enemy spawns
@@ -169,12 +164,34 @@ class Play extends Phaser.Scene
 
         var num = 4;
 
-        // add enemies 1
-        this.enemy = new Enemy
-        (this, 200, 0, 'candyCorn', 0, 10, 1).setOrigin(0, 0);
-        this.enemies.push(this.enemy);
-
-        console.log(this.enemies[0].path);
+        // add upper enemies
+        for(var i = 0; i < this.waveLength; i++){
+            var l = i * -100 - 50; // delayed spawns
+            this.enemy = new Enemy
+            (this, 200, l, 'candyCorn', 0, 10, 1).setOrigin(0, 0);
+            this.enemies.push(this.enemy); 
+        }
+        // add lower enemies
+        for(var i = 0; i < this.waveLength; i++){
+            var l = i * 100 + 550; // delayed spawns
+            this.enemy = new Enemy
+            (this, 500, l, 'candyCorn', 0, 10, 2).setOrigin(0, 0);
+            this.enemies.push(this.enemy); 
+        }
+        // add leftward enemies
+        for(var i = 0; i < this.waveLength; i++){
+            var l = i * -100 - 50; // delayed spawns
+            this.enemy = new Enemy
+            (this, l, 100, 'candyCorn', 0, 10, 3).setOrigin(0, 0);
+            this.enemies.push(this.enemy); 
+        }
+        // add rightward enemies
+        for(var i = 0; i < this.waveLength; i++){
+            var l = i * 100 + 700; // delayed spawns
+            this.enemy = new Enemy
+            (this, l, 400, 'candyCorn', 0, 10, 4).setOrigin(0, 0);
+            this.enemies.push(this.enemy); 
+        }
         //----------------------------------------------------------------------
         // add the user input
         // define mouse controls
@@ -586,7 +603,7 @@ class Play extends Phaser.Scene
         var X = 50*x+25;
         var Y = 50*y+25;
         this.outline = this.add.image(X, Y, 'outline');
-        this.outline.alpha = 0.25;
+        this.outline.alpha = 0.0;
     }
     
     formatTime(ms)

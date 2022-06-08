@@ -22,7 +22,7 @@ class Enemy extends Phaser.GameObjects.Sprite
         this.i = 0;
         this.j = 0; 
 
-        this.speed = 1;
+        this.speed = 5;
     }
     
 
@@ -56,36 +56,21 @@ class Enemy extends Phaser.GameObjects.Sprite
             this.j++;
             console.log('works');
         }
-        //console.log(diffX + ',' + diffY);
-        //console.log(i + ',' + j);
-        
-        // fade away as it resets 
-        if(this.y >= game.config.height-180){
-            this.alpha -= 0.1;
-        }
-
-        // wraparound from left to right edge
-        if(this.y >= game.config.height-130){
-            // fully opace
-            this.alpha = 1;
-            // min/max value on enemy spawns
-            var min = -50;
-            var max = -1000;
-            this.y = Phaser.Math.Between(min, max);
-        } 
-        
     }
     
     choosePath(choice){
-        if(choice == 1){
-            this.pathX = [200, 400, 400, 300, 300];
-            this.pathY = [100, 100, 200, 200, 300];
-        } else if(choice == 2){
-            
-        } else if(choice == 3){
-            
-        } else if(choice == 4){
-            
+        if(choice == 1){ // upper path
+            this.pathX = [200, 450, 450, 300, 300];
+            this.pathY = [50, 50, 200, 200, 250];
+        } else if(choice == 2){ // lower path
+            this.pathX = [500, 100, 100, 300, 300];
+            this.pathY = [450, 450, 350, 350, 250];
+        } else if(choice == 3){ // left path
+            this.pathX = [250, 250, 100, 100, 300];
+            this.pathY = [100, 150, 150, 250, 250];
+        } else if(choice == 4){ // right path
+            this.pathX = [600, 600, 550, 550, 300];
+            this.pathY = [400, 100, 100, 250, 250];
         }
     }
 

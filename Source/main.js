@@ -3,7 +3,7 @@ let config =
 {
     type: Phaser.CANVAS,
     width: 650, //default 640
-    height: 500, //default 480
+    height: 550, //default 480
 
     // scale: {
     //     mode: Phaser.Scale.FIT,
