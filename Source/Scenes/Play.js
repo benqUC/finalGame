@@ -20,9 +20,6 @@ class Play extends Phaser.Scene
         this.load.atlas("parent", "./assets/gamePlayerAtlas.png", "./assets/playermap.json");
         this.load.atlas("candy", "./assets/gameEnemyAtlas.png", "./assets/enemymap.json");
 
-        // load enemies
-        this.load.image("zombie", "./assets/zombie.png");
-
         // load environment
         this.load.image("roadblock1", "./assets/obstacles/bigRoadblock.png");
         this.load.image("obstacle1", "./assets/obstacles/obstacle01.png");
@@ -484,30 +481,34 @@ class Play extends Phaser.Scene
             for(var i = 0; i < this.waveLength; i++){
                 var l = i * -100 - 50; // delayed spawns
                 this.enemy = new Enemy
-                (this, 200, l, 'candyCorn', 0, 10, 1).setOrigin(0, 0);
+                (this, 200, l, 'candy', 0, 10, 1).setOrigin(0, 0);
+                this.enemy.play('enemy_anim');
                 this.enemies.push(this.enemy); 
             }
             // add lower enemies
             for(var i = 0; i < this.waveLength; i++){
                 var l = i * 100 + 550 + 900; // delayed spawns
                 this.enemy = new Enemy
-                (this, 500, l, 'candyCorn', 0, 10, 2).setOrigin(0, 0);
+                (this, 500, l, 'candy', 0, 10, 2).setOrigin(0, 0);
+                this.enemy.play('enemy_anim');
                 this.enemies.push(this.enemy); 
             }
             // add leftward enemies
             for(var i = 0; i < this.waveLength; i++){
                 var l = i * -100 - 50 - 1800; // delayed spawns
                 this.enemy = new Enemy
-                (this, l, 100, 'candyCorn', 0, 10, 3).setOrigin(0, 0);
+                (this, l, 100, 'candy', 0, 10, 3).setOrigin(0, 0);
+                this.enemy.play('enemy_anim');
                 this.enemies.push(this.enemy); 
             }    
             // add rightward enemies
             for(var i = 0; i < this.waveLength; i++){
                 var l = i * 100 + 700 + 2700; // delayed spawns
                 this.enemy = new Enemy
-                (this, l, 400, 'candyCorn', 0, 10, 4).setOrigin(0, 0);
+                (this, l, 400, 'candy', 0, 10, 4).setOrigin(0, 0);
+                this.enemy.play('enemy_anim');
                 this.enemies.push(this.enemy); 
-            }            
+            }          
     }
 
     canPlace(){
@@ -536,7 +537,7 @@ class Play extends Phaser.Scene
         else return false;
     }
 
-    zombieKill(enemy)
+    enemieKill(enemy)
     {
         enemy.alpha = 0; // set enemy to be fully transparent
         enemy.y = Phaser.Math.Between(-50, -1000); // reset enemy position
