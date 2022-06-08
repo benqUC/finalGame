@@ -22,7 +22,7 @@ class Enemy extends Phaser.GameObjects.Sprite
         this.i = 0;
         this.j = 0; 
 
-        this.speed = 5;
+        this.speed = 1;
     }
     
 
@@ -55,6 +55,11 @@ class Enemy extends Phaser.GameObjects.Sprite
             this.i++;
             this.j++;
             console.log('works');
+        }
+
+        if(this.x == 300 & this.y == 250){
+            this.alpha -= 0.05 * this.speed;
+            this.scale -= 0.05 * this.speed;
         }
     }
     
