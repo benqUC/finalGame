@@ -28,12 +28,7 @@ class Play extends Phaser.Scene
         this.load.image("obstacle1", "./assets/obstacles/obstacle01.png");
         this.load.image("obstacle2", "./assets/obstacles/obstacle02.png");
         this.load.image("block", "./assets/gameBox.png");
-        this.load.image("pathHorizontal", "./assets/gamePathHorizontal.png");
-        this.load.image("pathVertical", "./assets/gamePathVertical.png");
-        this.load.image("corner1", "./assets/gamePathCorner1.png");
-        this.load.image("corner2", "./assets/gamePathCorner2.png");
-        this.load.image("corner3", "./assets/gamePathCorner3.png");
-        this.load.image("corner4", "./assets/gamePathCorner4.png");
+        this.load.image("path", "./assets/gamePath.png");
 
         // load sound
         this.load.audio("start1", "./assets/bgm/start1.wav");
