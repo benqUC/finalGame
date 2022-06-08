@@ -12,26 +12,12 @@ class Tutorial extends Phaser.Scene
     {
         // load audio files
         this.load.audio("wrapper1", "./assets/wrapper1.mp3");
-        this.load.audio("sfx_select", "./assets/blip_select12.wav");
-        this.load.audio("sfx_explosion", "./assets/explosion38.wav");
+        this.load.audio("wrapper3", "./assets/wrapper3.mp3");
         
         //load bgm
         this.load.audio("bgm1_getReady", "./assets/bgm/Cute.mp3");
         this.load.audio("bgm1_getReadyLoop", "./assets/bgm/Cute.mp3");
         this.load.audio("go1", "./assets/bgm/WigglingBaby.mp3");
-
-        // load images/tile sprites
-        this.load.image("car", "./assets/car.png");
-        this.load.image("road", "./assets/Road-long.png");
-        this.load.image("hud", "./assets/hud.png");
-
-        // zombies
-        this.load.image("zombie", "./assets/zombie.png");
-
-        // obstacles
-        this.load.image("roadblock1", "./assets/obstacles/bigRoadblock.png");
-        this.load.image("obstacle1", "./assets/obstacles/obstacle01.png");
-        this.load.image("obstacle2", "./assets/obstacles/obstacle02.png");
  
     }
     //-end preload()------------------------------------------------------------
@@ -144,7 +130,7 @@ class Tutorial extends Phaser.Scene
 
                 countdown: 0
             }
-            this.sound.play("sfx_select");
+            this.sound.play("wrapper3");
             this.getReady.stop();
             this.getReadyLoop.stop();
             this.scene.start("playScene");
