@@ -16,12 +16,12 @@ class Play extends Phaser.Scene
         this.load.image("target", "./assets/gameFist.png");
         this.load.image('rocket', './assets/rocket.png');
 
-        // load car atlas
-        this.load.atlas("player_atlas", "./assets/gamePlayerAtlas.png", "./assets/playermap.json");
+        // load atlases for player and enemy
+        this.load.atlas("parent", "./assets/gamePlayerAtlas.png", "./assets/playermap.json");
+        this.load.atlas("candy", "./assets/gameEnemyAtlas.png", "./assets/enemymap.json");
 
         // load enemies
         this.load.image("zombie", "./assets/zombie.png");
-        this.load.image("candyCorn", "./assets/gameEnemy.png");
 
         // load environment
         this.load.image("roadblock1", "./assets/obstacles/bigRoadblock.png");
@@ -110,7 +110,7 @@ class Play extends Phaser.Scene
             this, // scene
             game.config.width/2, // x-coord
             game.config.height/1.45, // y-coord
-            "player_atlas", // texture
+            "parent", // texture
             0, // frame
             false, // left collision checker
             false, // right collision checker
@@ -121,7 +121,7 @@ class Play extends Phaser.Scene
         // add player animations
         this.anims.create({
             key: 'player_walk',
-            frames: this.anims.generateFrameNames('player_atlas', {
+            frames: this.anims.generateFrameNames('parent', {
                 prefix: 'walk',
                 start: 1,
                 end: 4,
@@ -133,10 +133,23 @@ class Play extends Phaser.Scene
 
         this.anims.create({
             key: 'player_idle',
-            frames: this.anims.generateFrameNames('player_atlas', {
+            frames: this.anims.generateFrameNames('parent', {
                 prefix: 'idle',
                 start: 1,
                 end: 1,
+                suffix: '',
+            }),
+            frameRate: 12,
+            repeat: -1,
+        });
+
+        // add enemy animation
+        this.anims.create({
+            key: 'enemy_anim',
+            frames: this.anims.generateFrameNames('candy', {
+                prefix: 'bounce',
+                start: 1,
+                end: 6,
                 suffix: '',
             }),
             frameRate: 12,
@@ -163,30 +176,35 @@ class Play extends Phaser.Scene
         for(var i = 0; i < this.waveLength; i++){
             var l = i * -100 - 50; // delayed spawns
             this.enemy = new Enemy
-            (this, 200, l, 'candyCorn', 0, 10, 1).setOrigin(0, 0);
+            (this, 200, l, 'candy', 0, 10, 1).setOrigin(0, 0);
+            this.enemy.play('enemy_anim');
             this.enemies.push(this.enemy); 
         }
         // add lower enemies
         for(var i = 0; i < this.waveLength; i++){
             var l = i * 100 + 550; // delayed spawns
             this.enemy = new Enemy
-            (this, 500, l, 'candyCorn', 0, 10, 2).setOrigin(0, 0);
+            (this, 500, l, 'candy', 0, 10, 2).setOrigin(0, 0);
+            this.enemy.play('enemy_anim');
             this.enemies.push(this.enemy); 
         }
         // add leftward enemies
         for(var i = 0; i < this.waveLength; i++){
             var l = i * -100 - 50; // delayed spawns
             this.enemy = new Enemy
-            (this, l, 100, 'candyCorn', 0, 10, 3).setOrigin(0, 0);
+            (this, l, 100, 'candy', 0, 10, 3).setOrigin(0, 0);
+            this.enemy.play('enemy_anim');
             this.enemies.push(this.enemy); 
         }
         // add rightward enemies
         for(var i = 0; i < this.waveLength; i++){
             var l = i * 100 + 700; // delayed spawns
             this.enemy = new Enemy
-            (this, l, 400, 'candyCorn', 0, 10, 4).setOrigin(0, 0);
+            (this, l, 400, 'candy', 0, 10, 4).setOrigin(0, 0);
+            this.enemy.play('enemy_anim');
             this.enemies.push(this.enemy); 
         }
+
         //----------------------------------------------------------------------
         // add the user input
         // define mouse controls
@@ -350,7 +368,7 @@ class Play extends Phaser.Scene
 
         var noDrag = this.matter.world.nextGroup();
 
-        this.matter.add.image(200, 100, 'candyCorn', null, { chamfer: 16 }).setBounce(0.9).setCollisionGroup(noDrag);
+        this.matter.add.image(200, 100, 'candy', null, { chamfer: 16 }).setBounce(0.9).setCollisionGroup(noDrag);
 
         this.matter.add.mouseSpring({ length: 1, stiffness: 0.6, collisionFilter: { group: canDrag } });
 
