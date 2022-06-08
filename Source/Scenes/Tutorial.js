@@ -121,12 +121,12 @@ class Tutorial extends Phaser.Scene
             // configuration settings for easy mode
             game.settings =
             {
-                playerSpeed: 4,
+                playerSpeed: 5,
                 fastzombieSpeed: 4,
-                gameTimer: 1320000,                
-                gasTimer: 0,
-                gas: 8,
-                apm: 'pm',
+                gameTimer: 6000,
+                respawnDelay1: 1,
+
+                countdown: 0
             }
             this.sound.play("sfx_select");
             this.getReady.stop();

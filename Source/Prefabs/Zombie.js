@@ -54,12 +54,14 @@ class Enemy extends Phaser.GameObjects.Sprite
         if(diffX == 0 & diffY == 0){
             this.i++;
             this.j++;
-            console.log('works');
         }
 
         if(this.x == 300 & this.y == 250){
             this.alpha -= 0.05 * this.speed;
             this.scale -= 0.05 * this.speed;
+            if(this.alpha == 0){
+                this.destroy();
+            }
         }
     }
     

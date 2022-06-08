@@ -148,45 +148,7 @@ class Play extends Phaser.Scene
         this.enemies = [];
 
         this.waveLength = 5;
-        // m is multiplier on how far enemy 2 is from enemy 1. Useful if we are moving roads
-        var m = 93;
-        // min/max value on enemy spawns
-        var min = -50;
-        var max = -1000;
-        // min/max on debris spawns
-        this.omin = game.config.width/2 - 316; // max left
-        this.omax = game.config.width/2 + 235; // max right
-
-        var num = 4;
-
-        // add upper enemies
-        for(var i = 0; i < this.waveLength; i++){
-            var l = i * -100 - 50; // delayed spawns
-            this.enemy = new Enemy
-            (this, 200, l, 'candyCorn', 0, 10, 1).setOrigin(0, 0);
-            this.enemies.push(this.enemy); 
-        }
-        // add lower enemies
-        for(var i = 0; i < this.waveLength; i++){
-            var l = i * 100 + 550; // delayed spawns
-            this.enemy = new Enemy
-            (this, 500, l, 'candyCorn', 0, 10, 2).setOrigin(0, 0);
-            this.enemies.push(this.enemy); 
-        }
-        // add leftward enemies
-        for(var i = 0; i < this.waveLength; i++){
-            var l = i * -100 - 50; // delayed spawns
-            this.enemy = new Enemy
-            (this, l, 100, 'candyCorn', 0, 10, 3).setOrigin(0, 0);
-            this.enemies.push(this.enemy); 
-        }
-        // add rightward enemies
-        for(var i = 0; i < this.waveLength; i++){
-            var l = i * 100 + 700; // delayed spawns
-            this.enemy = new Enemy
-            (this, l, 400, 'candyCorn', 0, 10, 4).setOrigin(0, 0);
-            this.enemies.push(this.enemy); 
-        }
+        
         //----------------------------------------------------------------------
         // add the user input
         // define mouse controls
@@ -313,22 +275,21 @@ class Play extends Phaser.Scene
         this.cdtMult = 1;
         this.start.play();       
 
-        this.gasTimer = game.settings.gasTimer;
-        this.gas = game.settings.gas;
-
-        this.gasTime = this.time.addEvent
+        this.rD1 = game.settings.respawnDelay1;
+    
+        this.timer = this.time.addEvent
         (
             {
                 delay: 1000,
                 callback: () =>
                 {
-                    this.gasTimer++ * this.tMult;
+                    this.rD1-- * this.tMult;
                 },
                 scope: this,
                 loop: true
             }
         );
-
+    
         //----------------------------------------------------------------------
         // game over event
         this.gameOver = false;
@@ -365,20 +326,11 @@ class Play extends Phaser.Scene
     //--------------------------------------------------------------------------
     update()
     {   
+        console.log(this.rD1);
         // play animations when player is moving
-        if (keyW.isDown) {
+        if (keyW.isDown || keyA.isDown || keyS.isDown || keyD.isDown) {
             this.player.play("player_walk", true);
-        }
-        else if (keyS.isDown) {
-            this.player.play("player_walk", true);
-        }
-        else if (keyA.isDown) {
-            this.player.play("player_walk", true);
-        }
-        else if (keyD.isDown) {
-            this.player.play("player_walk", true);
-        }
-        else {
+        } else {
             this.player.play("player_idle", true);
         }
 
@@ -415,39 +367,25 @@ class Play extends Phaser.Scene
         {
             this.scene.start("menuScene");
         }
+
+        // gameplay
         if(!this.gameOver & this.init)
         {
             // update player
             this.player.update(this.p1Lives);
             //this.checkCollision();
-            this.createOutline(this.tileX,this.tileY);
-            /*
-            for(var i = 0; i < game.config.width/50; i++){ // x axis
-                for(var j = 0; j < game.config.height/50; j++){ // y axis
-                    if(){
+            
+            // delay waves of enemies
+            if(this.rD1 <= 0){
+                this.spawnWave();
+                this.rD1 = 60;
+            }
 
-                    }
-                }
-            }*/
-            
             // update enemies
-            
             for(var i = 0; i < this.enemies.length; i++){
                 this.enemies[i].update(this.enemies[i].path);
             }
 
-            // check if enemies overlap
-            for(var i = 0; i < this.obstacles.length; i++){
-                for(var j = 0; j < this.enemies.length; j++){
-                    if(this.checkOverlap(this.enemies[j], this.obstacles[i]))
-                    {
-                        this.enemies[i].y -= 50;
-                    }        
-                }        
-            }
-
-            
-                
             // } else if (this.rangeDist > 50) {
             //     this.reticle.x = 50;
             //     this.reticle.y = 50;
@@ -477,8 +415,6 @@ class Play extends Phaser.Scene
             if(this.canPlace()){
                 this.input.on('pointerdown', () => this.placeTower(this.reticle.x, this.reticle.y));
             }
-
-            console.log(this.canPlace())
 
             this.Bullet.rotation = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.reticle.x, this.reticle.y);
 
@@ -529,7 +465,37 @@ class Play extends Phaser.Scene
         }*/
     }
 
-    
+    // spawn enemies
+    spawnWave(){
+            // add upper enemies
+            for(var i = 0; i < this.waveLength; i++){
+                var l = i * -100 - 50; // delayed spawns
+                this.enemy = new Enemy
+                (this, 200, l, 'candyCorn', 0, 10, 1).setOrigin(0, 0);
+                this.enemies.push(this.enemy); 
+            }
+            // add lower enemies
+            for(var i = 0; i < this.waveLength; i++){
+                var l = i * 100 + 550 + 900; // delayed spawns
+                this.enemy = new Enemy
+                (this, 500, l, 'candyCorn', 0, 10, 2).setOrigin(0, 0);
+                this.enemies.push(this.enemy); 
+            }
+            // add leftward enemies
+            for(var i = 0; i < this.waveLength; i++){
+                var l = i * -100 - 50 - 1800; // delayed spawns
+                this.enemy = new Enemy
+                (this, l, 100, 'candyCorn', 0, 10, 3).setOrigin(0, 0);
+                this.enemies.push(this.enemy); 
+            }    
+            // add rightward enemies
+            for(var i = 0; i < this.waveLength; i++){
+                var l = i * 100 + 700 + 2700; // delayed spawns
+                this.enemy = new Enemy
+                (this, l, 400, 'candyCorn', 0, 10, 4).setOrigin(0, 0);
+                this.enemies.push(this.enemy); 
+            }            
+    }
 
     canPlace(){
         var x = Math.floor(this.reticle.x/50);
@@ -559,7 +525,6 @@ class Play extends Phaser.Scene
 
     zombieKill(enemy)
     {
-        this.gasTimer = 0;
         enemy.alpha = 0; // set enemy to be fully transparent
         enemy.y = Phaser.Math.Between(-50, -1000); // reset enemy position
         enemy.alpha = 1; // set enemy to be fully visible
