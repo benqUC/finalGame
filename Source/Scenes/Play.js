@@ -317,21 +317,21 @@ class Play extends Phaser.Scene
         scoreConfig.fixedWidth = 0;
 
         // add Bullet 
-        this.Bullet = this.add.sprite(game.config.width/2, game.config.height/2, 'rocket');
+        // this.Bullet = this.add.sprite(game.config.width/2, game.config.height/2, 'rocket');
 
-        this.firing = false;
+        // this.firing = false;
 
-        this.matter.world.setBounds();
+        // this.matter.world.setBounds();
 
-        var canDrag = this.matter.world.nextGroup();
+        // var canDrag = this.matter.world.nextGroup();
 
-        this.matter.add.image(100, 100, 'block', null, { chamfer: 16 }).setBounce(0.9).setCollisionGroup(canDrag);
+        // this.matter.add.image(100, 100, 'block', null, { chamfer: 16 }).setBounce(0.9).setCollisionGroup(canDrag);
 
-        var noDrag = this.matter.world.nextGroup();
+        // var noDrag = this.matter.world.nextGroup();
 
-        this.matter.add.image(200, 100, 'candy', null, { chamfer: 16 }).setBounce(0.9).setCollisionGroup(noDrag);
+        // this.matter.add.image(200, 100, 'candy', null, { chamfer: 16 }).setBounce(0.9).setCollisionGroup(noDrag);
 
-        this.matter.add.mouseSpring({ length: 1, stiffness: 0.6, collisionFilter: { group: canDrag } });
+        // this.matter.add.mouseSpring({ length: 1, stiffness: 0.6, collisionFilter: { group: canDrag } });
 
         // reticle creation
         this.reticle = this.add.sprite(game.config.width/2, game.config.height/2, 'target');
@@ -445,27 +445,27 @@ class Play extends Phaser.Scene
             // }
 
             // console.log(this.reticle.x + ',' + this.reticle.y);
-            if(Phaser.Input.Keyboard.JustDown(keyF) && !this.isFiring){
-                //console.log("testing");
-                this.isFiring = true;
-            }
-            // if fired, move up
-            if(this.isFiring) {
-                //console.log("fired");
-                this.Bullet.x = this.reticle.x;
-                console.log("fired");
+            // if(Phaser.Input.Keyboard.JustDown(keyF) && !this.isFiring){
+            //     //console.log("testing");
+            //     this.isFiring = true;
+            // }
+            // // if fired, move up
+            // if(this.isFiring) {
+            //     //console.log("fired");
+            //     this.Bullet.x = this.reticle.x;
+            //     console.log("fired");
 
                 
-                // this.Bullet.x = this.reticle.x;
+            //     // this.Bullet.x = this.reticle.x;
 
-                this.Bullet.y -= 1;
-            }
+            //     this.Bullet.y -= 1;
+            // }
 
             if(this.canPlace()){
                 this.input.on('pointerdown', () => this.placeTower(this.reticle.x, this.reticle.y));
             }
 
-            this.Bullet.rotation = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.reticle.x, this.reticle.y);
+            // this.Bullet.rotation = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.reticle.x, this.reticle.y);
 
             
             //var x = (this.player.x - this.reticle.x)^2;
