@@ -36,7 +36,7 @@ class Play extends Phaser.Scene
         // load player
         this.load.image("tile", "./assets/gameTile.png");
         this.load.image("path", "./assets/gamePath.png");
-        this.load.image("tower", "./assets/gameTower.png");
+        this.load.image("tower", "./assets/gameTower2.png");
         this.load.image("player", "./assets/gamePlayer.png");
         this.load.image("outline", "./assets/gameOutline.png");
         this.load.image("baby", "./assets/gameBaby.png");
@@ -101,7 +101,6 @@ class Play extends Phaser.Scene
                 }
             }
         }
-        this.outline = this.add.image(-100, -100, 'outline');
 
         //----------------------------------------------------------------------
         // add in the game objects
@@ -352,9 +351,11 @@ class Play extends Phaser.Scene
         // checks where in the grid the player is located at
         this.tileX = Math.floor((this.player.x)/50); // 27
         this.tileY = Math.floor((this.player.y)/50); // 24
-        
-        //console.log(this.tileX+","+this.tileY)
-        var j = this.tileX - 1;
+
+        // checks where in the grid the player is located at
+        this.cursorX = Math.floor(this.reticle.x/50);
+        this.cursorY = Math.floor(this.reticle.y/50);
+
         if(!this.setup){
             if(!this.start.isPlaying & !this.checkpoint){
                 this.start.stop()       
@@ -372,9 +373,6 @@ class Play extends Phaser.Scene
         if (Phaser.Input.Keyboard.JustDown(keyESC)) {
             this.scene.resume("playScene");
         }
-
-
-
 
         // when game is over remove the game clock event
         if(this.gameOver) {
@@ -525,15 +523,14 @@ class Play extends Phaser.Scene
     }
 
     canPlace(){
-        var x = Math.floor(this.reticle.x/50);
-        var y = Math.floor(this.reticle.y/50);
-        /*console.log(this.grid[x][y].h)
-        if(this.grid[x][y].h == 0){
+        if(this.reticle.x > 10 & this.reticle.x < 625 & this.reticle.y > 10 & this.reticle.y < 525){
+            console.log('works');
+            if(this.map[this.cursorX][this.cursorY] == 0){
                 return true;
-        } else {
-            return false;
-        }*/
-        return true;
+            } else {
+                return false;
+            }
+        }
     }
 
     checkOverlap(o1, o2)
@@ -582,18 +579,8 @@ class Play extends Phaser.Scene
                 50, // length
                 1, // height (0 is passable, 1 can have items be thrown over it, 2 is completely impassable on ground, 3 is impassible mid air)
         ).setScale(1, 1).setOrigin(0.5, 0.5);
-
+        this.map[i][j] == 1;
     }
-
-    createOutline(x,y){ // creates outline for placing buildings
-        this.outline.destroy();
-        var X = 50*x+25;
-        var Y = 50*y+25;
-        this.outline = this.add.image(X, Y, 'outline');
-        this.outline.alpha = 0.0;
-    }
-
-    
     
     formatTime(ms)
     {
