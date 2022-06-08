@@ -82,6 +82,15 @@ class Tutorial extends Phaser.Scene
         this.add.text
         (
             centerX,
+            centerY + textSpacer,
+            "Press R during play to restart",
+            tutConfig
+        ).setOrigin(0.5);
+        tutConfig.backgroundColor = "#0080db"; // change highlight
+
+        this.add.text
+        (
+            centerX,
             centerY + textSpacer*2,
             "Press SPACE to start",
             tutConfig
