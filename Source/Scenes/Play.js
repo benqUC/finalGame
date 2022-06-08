@@ -374,6 +374,7 @@ class Play extends Phaser.Scene
         // pause menu mechanic 
         if (Phaser.Input.Keyboard.JustDown(keyP)) {
             this.scene.pause();
+            this.go1.stop();
         }
         if (Phaser.Input.Keyboard.JustDown(keyESC)) {
             this.scene.resume("playScene");
@@ -389,16 +390,19 @@ class Play extends Phaser.Scene
         // check for key input to restart
         if( Phaser.Input.Keyboard.JustDown(keyR))
         {
+            this.go1.stop();
             this.scene.restart(this.p1Score);
         }
         // key for menu
         if( Phaser.Input.Keyboard.JustDown(keyM))
         {
+            this.go1.stop();
             this.scene.start("menuScene");
         }
         // key for tutorial 
         if( Phaser.Input.Keyboard.JustDown(keyT))
         {
+            this.go1.stop();
             this.scene.start("tutorialScene");
         }
 
