@@ -24,7 +24,7 @@ let config =
         }
     },
 
-    scene: [Menu, Tutorial, Play]
+    scene: [Menu, Tutorial, Credits, Play]
 };
 
 let game = new Phaser.Game(config); // create main game object
@@ -48,6 +48,6 @@ game.settings =
 };
 
 // reserve some keyboard bindings
-let keyW, keyA, keyS, keyD, keyE, keyH, keyM, keyR, keyF, keyP, keyT, keyLEFT, keyRIGHT, keySPACE, keyESC;
+let keyW, keyA, keyS, keyD, keyE, keyH, keyM, keyR, keyF, keyP, keyT, keyLEFT, keyRIGHT, keySPACE, keyESC, keyC;
 // reserve an inputPlugin binding
 let mouse;

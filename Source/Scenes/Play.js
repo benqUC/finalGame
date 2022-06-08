@@ -25,7 +25,7 @@ class Play extends Phaser.Scene
         this.load.image("obstacle1", "./assets/obstacles/obstacle01.png");
         this.load.image("obstacle2", "./assets/obstacles/obstacle02.png");
         this.load.image("block", "./assets/gameBox.png");
-        this.load.image("path", "./assets/gamePath.png");
+        this.load.image("path", "./assets/gamePath2.png");
 
         // load sound
         this.load.audio("start1", "./assets/bgm/start1.wav");
@@ -35,7 +35,6 @@ class Play extends Phaser.Scene
 
         // load player
         this.load.image("tile", "./assets/gameTile.png");
-        this.load.image("path", "./assets/gamePath.png");
         this.load.image("tower", "./assets/gameTower2.png");
         this.load.image("player", "./assets/gamePlayer.png");
         this.load.image("outline", "./assets/gameOutline.png");

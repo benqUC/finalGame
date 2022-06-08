@@ -11,6 +11,7 @@ class Tutorial extends Phaser.Scene
     preload()
     {
         // load audio files
+        this.load.audio("wrapper1", "./assets/wrapper1.mp3");
         this.load.audio("sfx_select", "./assets/blip_select12.wav");
         this.load.audio("sfx_explosion", "./assets/explosion38.wav");
         
@@ -42,16 +43,16 @@ class Tutorial extends Phaser.Scene
         // menu display configuration
         let tutConfig =
         {
-            fontFamily: "Courier",
-            fontSize: "28px",
-            backgroundColor: "#f3b141",
-            color: "#843605",
+            fontFamily: "Comic Sans MS",
+            fontSize: "50px",
+            backgroundColor: "#ff8400",
+            color: "#000000",
             align: "right",
             padding: {top: 5, bottom: 5},
             fixedWidth: 0
         };
 
-        // meny text positioning
+        // menu text positioning
         let centerX = game.config.width/2;
         let centerY = game.config.height/2;
         let textSpacer = 64;
@@ -60,30 +61,43 @@ class Tutorial extends Phaser.Scene
         this.add.text
         (
             centerX, // x-coord
-            centerY - textSpacer, // y-coord
+            centerY - textSpacer*3 - textSpacer/2, // y-coord
             "TUTORIAL", // initial text to be displayed
             tutConfig // configuration object
         ).setOrigin(0.5);
+        tutConfig.backgroundColor = "#00db33"; // change highlight
+        tutConfig.fontSize = "30px"; // change font size
 
-        // meny music plays
-    //    this.sound.play("bgm");
+        this.add.text
+        (
+            centerX,
+            centerY - textSpacer*2,
+            "Move with W A S D",
+            tutConfig
+        ).setOrigin(0.5);
+
+        this.add.text
+        (
+            centerX,
+            centerY - textSpacer,
+            "Use mouse to control drone and", 
+            tutConfig
+        ).setOrigin(0.5);
 
         this.add.text
         (
             centerX,
             centerY,
-            "Move with W A S D",
+            "click to pick up boxes/build towers",
             tutConfig
         ).setOrigin(0.5);
-        tutConfig.backgroundColor = "#00C080"; // set object property
-        tutConfig.color = "#000000";
+        tutConfig.backgroundColor = "#0080db"; // change highlight
 
         this.add.text
         (
             centerX,
-            centerY + textSpacer,
-            "Use mouse to control drone and", 
-            "click to pick up boxes/build towers",
+            centerY + textSpacer*2,
+            "Press SPACE to start",
             tutConfig
         ).setOrigin(0.5);
 
@@ -91,7 +105,7 @@ class Tutorial extends Phaser.Scene
         (
             centerX,
             centerY + textSpacer*3,
-            "Press Space to start",
+            "Press C to open Credits",
             tutConfig
         ).setOrigin(0.5);
         
@@ -104,6 +118,7 @@ class Tutorial extends Phaser.Scene
 
         // define input keys
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C);
         this.getReady.play();  
     }
     //-end create()-------------------------------------------------------------
@@ -133,6 +148,14 @@ class Tutorial extends Phaser.Scene
             this.getReady.stop();
             this.getReadyLoop.stop();
             this.scene.start("playScene");
+        }
+        // enter Credits
+        if(Phaser.Input.Keyboard.JustDown(keyC))
+        {
+            this.getReady.stop();
+            this.getReadyLoop.stop();
+            this.sound.play("wrapper1");
+            this.scene.start("creditScene");
         }
     }
 }
