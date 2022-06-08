@@ -29,7 +29,7 @@ class Play extends Phaser.Scene
 
         // load sound
         this.load.audio("start1", "./assets/bgm/start1.wav");
-        this.load.audio("go1", "./assets/bgm/go1.OGG");
+        this.load.audio("go1", "./assets/bgm/WigglingBaby.OGG");
         this.load.audio("go2", "./assets/bgm/go2.wav");
         this.load.audio("go3", "./assets/bgm/go3.wav");
 
