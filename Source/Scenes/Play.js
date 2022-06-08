@@ -98,6 +98,9 @@ class Play extends Phaser.Scene
                 if(this.map[i][j] == 1){
                     this.add.image(pX, pY, 'path')
                 }
+                if(this.map[i][j] == 4){
+                    this.add.image(pX, pY, 'baby')
+                }
             }
         }
 
