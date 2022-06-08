@@ -590,7 +590,7 @@ class Play extends Phaser.Scene
                 50, // length
                 1, // height (0 is passable, 1 can have items be thrown over it, 2 is completely impassable on ground, 3 is impassible mid air)
         ).setScale(1, 1).setOrigin(0.5, 0.5);
-        this.map[i][j] == 1;
+        this.map[i][j] = 1;
     }
     
     formatTime(ms)
