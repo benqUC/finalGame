@@ -82,7 +82,7 @@ class Tutorial extends Phaser.Scene
         (
             centerX,
             centerY + textSpacer,
-            "Use mouse to aim and click to fire",
+            "Use mouse to control drone and click to pick up boxes/build towers",
             tutConfig
         ).setOrigin(0.5);
 

@@ -17,7 +17,7 @@ class Play extends Phaser.Scene
         this.load.image('rocket', './assets/rocket.png');
 
         // load car atlas
-        this.load.atlas("car_atlas", "./assets/car-atlas.png", "./assets/carmap.json");
+        this.load.atlas("player_atlas", "./assets/gamePlayerAtlas.png", "./assets/playermap.json");
 
         // load enemies
         this.load.image("zombie", "./assets/zombie.png");
@@ -120,7 +120,7 @@ class Play extends Phaser.Scene
             this, // scene
             game.config.width/2, // x-coord
             game.config.height/1.45, // y-coord
-            "player", // texture
+            "player_atlas", // texture
             0, // frame
             false, // left collision checker
             false, // right collision checker
@@ -129,22 +129,29 @@ class Play extends Phaser.Scene
         ).setScale(0.5, 0.5).setOrigin(.5,.5);
 
         // add player animations
-        /*
         this.anims.create({
-            key: 'car_anim',
-            frames: this.anims.generateFrameNames('car_atlas', {
-                prefix: 'sprite',
+            key: 'player_walk',
+            frames: this.anims.generateFrameNames('player_atlas', {
+                prefix: 'walk',
                 start: 1,
-                end: 6,
+                end: 4,
                 suffix: '',
             }),
             frameRate: 12,
             repeat: -1,
         });
 
-        // play animation
-        this.player.play("car_anim");
-        */
+        this.anims.create({
+            key: 'player_idle',
+            frames: this.anims.generateFrameNames('player_atlas', {
+                prefix: 'idle',
+                start: 1,
+                end: 1,
+                suffix: '',
+            }),
+            frameRate: 12,
+            repeat: -1,
+        });
 
         // array of obstacles and enemies
         this.obstacles = [];
@@ -184,7 +191,6 @@ class Play extends Phaser.Scene
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-
 
         //----------------------------------------------------------------------
         // add the animations
@@ -319,9 +325,6 @@ class Play extends Phaser.Scene
         // 60s play clock
         scoreConfig.fixedWidth = 0;
 
-        // reticle creation
-        this.reticle = this.add.sprite(game.config.width/2, game.config.height/2, 'target');
-
         // add Bullet 
         this.Bullet = this.add.sprite(game.config.width/2, game.config.height/2, 'rocket');
 
@@ -338,6 +341,11 @@ class Play extends Phaser.Scene
         this.matter.add.image(200, 100, 'candyCorn', null, { chamfer: 16 }).setBounce(0.9).setCollisionGroup(noDrag);
 
         this.matter.add.mouseSpring({ length: 1, stiffness: 0.6, collisionFilter: { group: canDrag } });
+
+        // reticle creation
+        this.reticle = this.add.sprite(game.config.width/2, game.config.height/2, 'target');
+
+        this.rangeDist = Phaser.Math.Distance.BetweenPoints(this.input.mousePointer, this.player);
     }
     // end create() ------------------------------------------------------------
     //--------------------------------------------------------------------------
@@ -345,7 +353,23 @@ class Play extends Phaser.Scene
     //--------------------------------------------------------------------------
     update()
     {   
-        
+        // play animations when player is moving
+        if (keyW.isDown) {
+            this.player.play("player_walk", true);
+        }
+        else if (keyS.isDown) {
+            this.player.play("player_walk", true);
+        }
+        else if (keyA.isDown) {
+            this.player.play("player_walk", true);
+        }
+        else if (keyD.isDown) {
+            this.player.play("player_walk", true);
+        }
+        else {
+            this.player.play("player_idle", true);
+        }
+
         // checks where in the grid the player is located at
         this.tileX = Math.floor((this.player.x)/50); // 27
         this.tileY = Math.floor((this.player.y)/50); // 24
@@ -410,27 +434,41 @@ class Play extends Phaser.Scene
                 }        
             }
 
-            this.reticle.x = this.input.mousePointer.x;
-            this.reticle.y = this.input.mousePointer.y;
+            
+                
+            // } else if (this.rangeDist > 50) {
+            //     this.reticle.x = 50;
+            //     this.reticle.y = 50;
+            //     // this.rangeDist = 50;
+            // }
+
             // console.log(this.reticle.x + ',' + this.reticle.y);
             if(Phaser.Input.Keyboard.JustDown(keyF) && !this.isFiring){
                 //console.log("testing");
                 this.isFiring = true;
-                this.Bullet.rotation = Phaser.Math.Angle.Between(this.Bullet.x, this.Bullet.y, this.reticle.x, this.reticle.y);
-                // this.Bullet.x = this.input.mousePointer.x;
-                // this.Bullet.y = this.input.mousePointer.y;
             }
             // if fired, move up
             if(this.isFiring) {
                 //console.log("fired");
                 this.Bullet.x = this.reticle.x;
+                console.log("fired");
 
-                this.Bullet.y -= 20;
+                
+                // this.Bullet.x = this.reticle.x;
+
+                this.Bullet.y -= 1;
             }
+
+            this.reticle.x = this.input.mousePointer.x;
+            this.reticle.y = this.input.mousePointer.y;
 
             if(this.canPlace()){
                 this.input.on('pointerdown', () => this.placeTower(this.reticle.x, this.reticle.y));
             }
+
+            console.log(this.canPlace())
+
+            this.Bullet.rotation = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.reticle.x, this.reticle.y);
 
             this.player.rotation = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.reticle.x, this.reticle.y);
 
