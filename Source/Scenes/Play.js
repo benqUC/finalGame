@@ -168,6 +168,7 @@ class Play extends Phaser.Scene
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+        keyT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
@@ -363,15 +364,14 @@ class Play extends Phaser.Scene
             }            
         }
 
+
+        // pause menu mechanic 
         if (Phaser.Input.Keyboard.JustDown(keyP)) {
             this.scene.pause();
         }
         if (Phaser.Input.Keyboard.JustDown(keyESC)) {
             this.scene.resume("playScene");
         }
-
-
-
 
         // when game is over remove the game clock event
         if(this.gameOver) {
@@ -385,10 +385,18 @@ class Play extends Phaser.Scene
         {
             this.scene.restart(this.p1Score);
         }
-        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyM))
+        // key for menu
+        if( Phaser.Input.Keyboard.JustDown(keyM))
         {
             this.scene.start("menuScene");
         }
+        // key for tutorial 
+        if( Phaser.Input.Keyboard.JustDown(keyT))
+        {
+            this.scene.start("tutorialScene");
+        }
+
+
         if(!this.gameOver & this.setup)
         {
             // update player

@@ -48,6 +48,6 @@ game.settings =
 };
 
 // reserve some keyboard bindings
-let keyW, keyA, keyS, keyD, keyE, keyH, keyM, keyR, keyF, keyP, keyLEFT, keyRIGHT, keySPACE, keyESC;
+let keyW, keyA, keyS, keyD, keyE, keyH, keyM, keyR, keyF, keyP, keyT, keyLEFT, keyRIGHT, keySPACE, keyESC;
 // reserve an inputPlugin binding
 let mouse;
