@@ -69,6 +69,8 @@ class Play extends Phaser.Scene
         this.towers = [];
         this.towerNum = 0;
 
+        this.baby = this.add.sprite(game.config.width/2, game.config.height/2, 'baby');
+
         for(var i = 0; i < this.map.length; i++){ // x axis
             for(var j = 0; j < this.map[i].length; j++){ // y axis
                 var pX = 25 + 50 * j;
@@ -278,8 +280,6 @@ class Play extends Phaser.Scene
         // 60s play clock
         scoreConfig.fixedWidth = 0;
 
-        this.baby = this.add.sprite(game.config.width/2, game.config.height/2, 'baby');
-
         // add Bullet 
         // this.Bullet = this.add.sprite(game.config.width/2, game.config.height/2, 'rocket');
 
@@ -299,8 +299,6 @@ class Play extends Phaser.Scene
 
         // reticle creation
         this.reticle = this.add.sprite(game.config.width/2, game.config.height/2, 'target');
-
-        this.rangeDist = Phaser.Math.Distance.BetweenPoints(this.input.mousePointer, this.player);
     }
     // end create() ------------------------------------------------------------
     //--------------------------------------------------------------------------
@@ -411,6 +409,15 @@ class Play extends Phaser.Scene
                 var j = this.enemies.length - 1;
                 this.towers[i].update(this.enemies[0].x, this.enemies[0].y);
             }
+
+            for(var i = 0; i < this.enemies.length; i++){
+                if(this.checkOverlap(this.baby, this.enemies[i]))
+                {
+                    game.settings.hp--;
+                    console.log(game.settings.hp);
+                    this.enemieKill(this.enemies[i]);
+                }        
+            }
             
 
             // } else if (this.rangeDist > 50) {
@@ -437,7 +444,6 @@ class Play extends Phaser.Scene
             // }
 
             if(this.canPlace()){
-                // console.log(this.towerNum);
                 this.input.on('pointerdown', () => this.placeTower(this.reticle.x, this.reticle.y));
             }
 
@@ -450,7 +456,7 @@ class Play extends Phaser.Scene
             //console.log(x + ' , ' + y + ' : ' + this.tileX + ' , ' + this.tileY);
 
             for(var i = 0; i < this.enemies.length; i++){
-                if(this.checkCollision(this.player, this.enemies[i]))
+                if(this.checkOverlap(this.player, this.enemies[i]))
                 {
                     game.settings.hp--;
                     console.log(game.settings.hp);
