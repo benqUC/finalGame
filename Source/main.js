@@ -24,7 +24,7 @@ let config =
         }
     },
 
-    scene: [Menu, Tutorial, Credits, Play]
+    scene: [Menu, Tutorial, Credits, Play, GameOver, Ending]
 };
 
 let game = new Phaser.Game(config); // create main game object
