@@ -137,8 +137,8 @@ class Tutorial extends Phaser.Scene
             // configuration settings for easy mode
             game.settings =
             {
+                hp: 5,
                 playerSpeed: 5,
-                fastzombieSpeed: 4,
                 gameTimer: 6000,
                 respawnDelay1: 1,
 

@@ -9,7 +9,7 @@ class Enemy extends Phaser.GameObjects.Sprite
         //Phaser.GameObjects.Image.call(this, scene, 0, 0, 'sprites', 'enemy');
 
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
-        this.hp = 0;
+        this.hp = 1;
 
         // store pointValue
         this.points = pointValue;
@@ -50,18 +50,15 @@ class Enemy extends Phaser.GameObjects.Sprite
         } else if(diffY < 0){
                 this.y -= this.speed;
         }
-
+        // if waypoint is reached, select next waypoint
         if(diffX == 0 & diffY == 0){
             this.i++;
             this.j++;
         }
 
-        if(this.x == 300 & this.y == 250){
-            this.alpha -= 0.05 * this.speed;
-            this.scale -= 0.05 * this.speed;
-            if(this.alpha == 0){
-                this.destroy();
-            }
+        // disappear as it reaches the baby
+        if(this.i == this.pathX.length & this.j == this.pathY.length){
+            this.die();
         }
     }
     
@@ -81,16 +78,6 @@ class Enemy extends Phaser.GameObjects.Sprite
         }
     }
 
-    startOnPath()
-    {
-        this.follower.t = 0;
-            this.hp = 100;
-            
-            path.getPoint(this.follower.t, this.follower.vec);
-            
-            this.setPosition(this.follower.vec.x, this.follower.vec.y);      
-    }
-
     receiveDamage(damage) {
         this.hp -= damage;           
         
@@ -101,6 +88,14 @@ class Enemy extends Phaser.GameObjects.Sprite
         }
     }
     
+    die(){
+        this.alpha -= 0.05 * this.speed;
+        this.scale -= 0.05 * this.speed;
+        if(this.alpha == 0){
+            this.destroy();
+        }        
+    }
+
     formatTime(ms)
     {
         let s = ms/1000;

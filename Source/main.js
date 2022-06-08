@@ -39,8 +39,8 @@ let path;
 // define the game settings, initially set for easy mode
 game.settings =
 {
+    hp: 5,
     playerSpeed: 5,
-    fastzombieSpeed: 4,
     gameTimer: 6000,
     respawnDelay1: 1,
 
