@@ -13,7 +13,7 @@ class Menu extends Phaser.Scene
         // load sfx
         this.load.audio("wrapper2", "./assets/wrapper2.mp3");
         // load music
-        this.load.audio("bgm1", "./assets/bgm/bgm1.wav");
+        this.load.audio("bgm1", "./assets/bgm/Cute.mp3");
         this.load.audio("bgm1_loop", "./assets/bgm/bgm1_loop.wav");
         // load background
         this.load.image("title", "./assets/gameTitle.png");

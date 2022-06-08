@@ -16,9 +16,9 @@ class Tutorial extends Phaser.Scene
         this.load.audio("sfx_explosion", "./assets/explosion38.wav");
         
         //load bgm
-        this.load.audio("bgm1_getReady", "./assets/bgm/bgm1_getReady.wav");
-        this.load.audio("bgm1_getReadyLoop", "./assets/bgm/bgm1_getReadyLoop.wav");
-        this.load.audio("go1", "./assets/bgm/go1.wav");
+        this.load.audio("bgm1_getReady", "./assets/bgm/Cute.mp3");
+        this.load.audio("bgm1_getReadyLoop", "./assets/bgm/Cute.mp3");
+        this.load.audio("go1", "./assets/bgm/WigglingBaby.mp3");
 
         // load images/tile sprites
         this.load.image("car", "./assets/car.png");
