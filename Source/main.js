@@ -42,8 +42,8 @@ game.settings =
     playerSpeed: 5,
     fastzombieSpeed: 4,
     gameTimer: 6000,
-    gasTimer: 0,
-    gas: 8,
+    respawnDelay1: 1,
+
     countdown: 0
 };
 
