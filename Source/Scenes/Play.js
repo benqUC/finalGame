@@ -350,6 +350,11 @@ class Play extends Phaser.Scene
         } else {
             this.player.play("player_idle", true);
         }
+        console.log(game.settings.hp);
+        // initiates Game Over Sequence
+        if(game.settings.hp <= 0){
+            this.gameOver = true;
+        }
 
         // checks where in the grid the player is located at
         this.tileX = Math.floor((this.player.x)/50); // 27
@@ -405,10 +410,13 @@ class Play extends Phaser.Scene
 
         if(!this.gameOver & this.setup)
         {
-            console.log(this.enemies)
+            // define reticles
+            this.reticle.x = this.input.mousePointer.x;
+            this.reticle.y = this.input.mousePointer.y;
             // update player
             this.player.update(this.p1Lives);
-            
+            this.player.rotation = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.reticle.x, this.reticle.y);
+
             // delay waves of enemies
             if(this.rD1 <= 0){
                 this.spawnWave();
@@ -419,6 +427,7 @@ class Play extends Phaser.Scene
             for(var i = 0; i < this.enemies.length; i++){
                 this.enemies[i].update(this.enemies[i].path);
             }
+            
             // tower seeks closest enemy
             for(var i = 0; i < this.towers.length; i ++){
                 var j = this.enemies.length - 1;
@@ -448,17 +457,13 @@ class Play extends Phaser.Scene
                 this.Bullet.y -= 1;
             }
 
-            this.reticle.x = this.input.mousePointer.x;
-            this.reticle.y = this.input.mousePointer.y;
-
             if(this.canPlace()){
                 this.input.on('pointerdown', () => this.placeTower(this.reticle.x, this.reticle.y));
             }
 
             this.Bullet.rotation = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.reticle.x, this.reticle.y);
 
-            this.player.rotation = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.reticle.x, this.reticle.y);
-
+            
             //var x = (this.player.x - this.reticle.x)^2;
             //var y = (this.player.y - this.reticle.y)^2;
 
