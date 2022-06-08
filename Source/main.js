@@ -11,17 +11,17 @@ let config =
     // },
 
     physics: {
-        // default: "arcade",
-        // arcade: {
+        default: "arcade",
+        arcade: {
         //   debug: true,
         //   debugShowBody: true
-        // }
-        default: 'matter',
-        matter: {
-            gravity: { y: 0 },
-            debug: true,
-            debugShowBody: true
         }
+        // default: 'matter',
+        // matter: {
+        //     gravity: { y: 0 },
+        //     debug: true,
+        //     debugShowBody: true
+        // }
     },
 
     scene: [Menu, Tutorial, Credits, Play, GameOver, Ending]
@@ -43,6 +43,7 @@ game.settings =
     playerSpeed: 5,
     gameTimer: 6000,
     respawnDelay1: 1,
+    enemiesKilled: 10,
 
     countdown: 0
 };

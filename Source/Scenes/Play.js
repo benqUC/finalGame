@@ -67,6 +67,7 @@ class Play extends Phaser.Scene
                     [0,0,1,1,1,1,1,1,1,1,1,0,0],
                     [0,0,0,0,0,0,0,0,0,0,1,0,0]];
         this.towers = [];
+        this.towerNum = 0;
 
         for(var i = 0; i < this.map.length; i++){ // x axis
             for(var j = 0; j < this.map[i].length; j++){ // y axis
@@ -78,9 +79,9 @@ class Play extends Phaser.Scene
                 if(this.map[i][j] == 1){
                     this.add.image(pX, pY, 'path')
                 }
-                if(this.map[i][j] == 4){
-                    this.add.image(pX, pY, 'baby')
-                }
+                // if(this.map[i][j] == 4){
+                //     this.add.image(pX, pY, 'baby')
+                // }
             }
         }
 
@@ -268,12 +269,16 @@ class Play extends Phaser.Scene
         );
     
         //----------------------------------------------------------------------
+        //game win event
+        this.gameWin = false;
         // game over event
         this.gameOver = false;
         // checkpoint event
         this.checkpoint = false;
         // 60s play clock
         scoreConfig.fixedWidth = 0;
+
+        this.baby = this.add.sprite(game.config.width/2, game.config.height/2, 'baby');
 
         // add Bullet 
         // this.Bullet = this.add.sprite(game.config.width/2, game.config.height/2, 'rocket');
@@ -314,6 +319,9 @@ class Play extends Phaser.Scene
         if(game.settings.hp <= 0){
             this.gameOver = true;
         }
+        if(game.settings.enemiesKilled <= 0){
+            this.gameWin = true;
+        }
 
         // checks where in the grid the player is located at
         this.tileX = Math.floor((this.player.x)/50); // 27
@@ -351,6 +359,13 @@ class Play extends Phaser.Scene
             this.scene.start("gameoverScene");
         }
 
+        // when game is over remove the game clock event
+        if(this.gameWin) {
+            this.time.removeAllEvents();
+            this.go1.stop();
+            this.scene.start("endingScene");
+        }
+
         // check for key input to restart
         if( Phaser.Input.Keyboard.JustDown(keyR))
         {
@@ -371,7 +386,7 @@ class Play extends Phaser.Scene
         }
 
 
-        if(!this.gameOver & this.setup)
+        if((!this.gameOver & this.setup) && (!this.gameWin & this.setup))
         {
             // define reticles
             this.reticle.x = this.input.mousePointer.x;
@@ -396,6 +411,7 @@ class Play extends Phaser.Scene
                 var j = this.enemies.length - 1;
                 this.towers[i].update(this.enemies[0].x, this.enemies[0].y);
             }
+            
 
             // } else if (this.rangeDist > 50) {
             //     this.reticle.x = 50;
@@ -421,6 +437,7 @@ class Play extends Phaser.Scene
             // }
 
             if(this.canPlace()){
+                // console.log(this.towerNum);
                 this.input.on('pointerdown', () => this.placeTower(this.reticle.x, this.reticle.y));
             }
 
@@ -431,6 +448,15 @@ class Play extends Phaser.Scene
             //var y = (this.player.y - this.reticle.y)^2;
 
             //console.log(x + ' , ' + y + ' : ' + this.tileX + ' , ' + this.tileY);
+
+            for(var i = 0; i < this.enemies.length; i++){
+                if(this.checkCollision(this.player, this.enemies[i]))
+                {
+                    game.settings.hp--;
+                    console.log(game.settings.hp);
+                    this.enemieKill(this.enemies[i]);
+                }        
+            }
         }
         
     }
@@ -440,7 +466,7 @@ class Play extends Phaser.Scene
     //--------------------------------------------------------------------------
     //
     
-    /*checkCollision(player, enemy)
+    checkCollision(player, enemy)
     {
         // simple AABB bounds checking
         if
@@ -452,7 +478,7 @@ class Play extends Phaser.Scene
         ) return true;
 
         else return false;
-    }*/
+    }
 
     // spawn enemies
     spawnWave(){
@@ -460,7 +486,7 @@ class Play extends Phaser.Scene
             for(var i = 0; i < this.waveLength; i++){
                 var l = i * -100 - 50; // delayed spawns
                 this.enemy = new Enemy
-                (this, 200, l, 'candy', 0, 10, 1).setOrigin(0, 0);
+                (this, 200, l, 'candy', 0, 10, 1).setOrigin(0, 0).setInteractive();
                 this.enemy.play('enemy_anim');
                 this.enemies.push(this.enemy); 
             }
@@ -468,7 +494,7 @@ class Play extends Phaser.Scene
             for(var i = 0; i < this.waveLength; i++){
                 var l = i * 100 + 550 + 900; // delayed spawns
                 this.enemy = new Enemy
-                (this, 500, l, 'candy', 0, 10, 2).setOrigin(0, 0);
+                (this, 500, l, 'candy', 0, 10, 2).setOrigin(0, 0).setInteractive();
                 this.enemy.play('enemy_anim');
                 this.enemies.push(this.enemy); 
             }
@@ -476,7 +502,7 @@ class Play extends Phaser.Scene
             for(var i = 0; i < this.waveLength; i++){
                 var l = i * -100 - 50 - 1800; // delayed spawns
                 this.enemy = new Enemy
-                (this, l, 100, 'candy', 0, 10, 3).setOrigin(0, 0);
+                (this, l, 100, 'candy', 0, 10, 3).setOrigin(0, 0).setInteractive();
                 this.enemy.play('enemy_anim');
                 this.enemies.push(this.enemy); 
             }    
@@ -484,13 +510,23 @@ class Play extends Phaser.Scene
             for(var i = 0; i < this.waveLength; i++){
                 var l = i * 100 + 700 + 2700; // delayed spawns
                 this.enemy = new Enemy
-                (this, l, 400, 'candy', 0, 10, 4).setOrigin(0, 0);
+                (this, l, 400, 'candy', 0, 10, 4).setOrigin(0, 0).setInteractive();
                 this.enemy.play('enemy_anim');
-                this.enemies.push(this.enemy); 
-            }          
+                this.enemies.push(this.enemy);
+            } 
+            this.input.on('gameobjectdown', function (pointer, gameObject) {
+                gameObject.destroy();
+            });  
     }
 
     canPlace(){
+        if(this.towerNum > 4){
+            return false;
+        } else {
+            return true;
+        }
+        
+
 /*        if(this.reticle.x > 10 & this.reticle.x < 625 & this.reticle.y > 10 & this.reticle.y < 525){    
             if(this.map[this.cursorX][this.cursorY] == 0){
                 console.log('works');
@@ -499,7 +535,7 @@ class Play extends Phaser.Scene
                 return false;
             }
         }*/
-        return true;
+        
     }
 
     checkOverlap(o1, o2)
@@ -549,7 +585,8 @@ class Play extends Phaser.Scene
                 1, // height (0 is passable, 1 can have items be thrown over it, 2 is completely impassable on ground, 3 is impassible mid air)
         ).setScale(1, 1).setOrigin(0.5, 0.5);
         this.towers.push(this.tower);
-        this.map[i][j] = 1;
+        this.towerNum++;
+        // this.map[i][j] = 1;
     }
 
     getDistance(x1, y1, x2, y2){
