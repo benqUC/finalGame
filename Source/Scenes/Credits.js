@@ -48,7 +48,7 @@ class Credits extends Phaser.Scene
         this.add.text
         (
             centerX,
-            centerY - textSpacer,
+            centerY - textSpacer*2,
             "Benjamin Quang",
             creditConfig
         ).setOrigin(0.5);
@@ -56,7 +56,7 @@ class Credits extends Phaser.Scene
         this.add.text
         (
             centerX,
-            centerY,
+            centerY - textSpacer,
             "Justin Vicente",
             creditConfig
         ).setOrigin(0.5);
@@ -64,15 +64,32 @@ class Credits extends Phaser.Scene
         this.add.text
         (
             centerX,
-            centerY + textSpacer,
+            centerY,
             "Jacob Phung",
+            creditConfig
+        ).setOrigin(0.5);
+
+
+        this.add.text
+        (
+            centerX,
+            centerY + textSpacer + textSpacer/2,
+            "Cute - Benjamin Tissot - Bensound",
             creditConfig
         ).setOrigin(0.5);
 
         this.add.text
         (
             centerX,
-            centerY + textSpacer*3,
+            centerY + textSpacer*2 + textSpacer/2,
+            "Wiggling Baby - 브금대통령 - BgmPresident",
+            creditConfig
+        ).setOrigin(0.5);
+
+        this.add.text
+        (
+            centerX,
+            centerY + textSpacer*3 + textSpacer/2 + textSpacer/3,
             "Press SPACE to return to Tutorial",
             creditConfig
         ).setOrigin(0.5);
