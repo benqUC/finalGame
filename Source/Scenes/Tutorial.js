@@ -86,7 +86,6 @@ class Tutorial extends Phaser.Scene
             "Press R during play to restart",
             tutConfig
         ).setOrigin(0.5);
-        tutConfig.backgroundColor = "#0080db"; // change highlight
 
         this.add.text
         (

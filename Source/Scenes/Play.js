@@ -10,25 +10,18 @@ class Play extends Phaser.Scene
     preload()
     {
         // load images/tile sprites
-        this.load.image("car", "./assets/car.png");
-        this.load.image("road", "./assets/Road-long.png");
-        this.load.image("hud", "./assets/hud.png");
         this.load.image("target", "./assets/gameFist.png");
-        this.load.image('rocket', './assets/rocket.png');
 
         // load atlases for player and enemy
         this.load.atlas("parent", "./assets/gamePlayerAtlas.png", "./assets/playermap.json");
         this.load.atlas("candy", "./assets/gameEnemyAtlas.png", "./assets/enemymap.json");
 
         // load environment
-        this.load.image("roadblock1", "./assets/obstacles/bigRoadblock.png");
-        this.load.image("obstacle1", "./assets/obstacles/obstacle01.png");
-        this.load.image("obstacle2", "./assets/obstacles/obstacle02.png");
         this.load.image("block", "./assets/gameBox.png");
         this.load.image("path", "./assets/gamePath2.png");
 
         // load sound
-        this.load.audio("start1", "./assets/bgm/start1.wav");
+        this.load.audio("start1", "./assets/bgm/CuteSnippet.mp3");
         this.load.audio("go1", "./assets/bgm/WigglingBaby.OGG");
         this.load.audio("go2", "./assets/bgm/go2.wav");
         this.load.audio("go3", "./assets/bgm/go3.wav");
@@ -39,19 +32,6 @@ class Play extends Phaser.Scene
         this.load.image("player", "./assets/gamePlayer.png");
         this.load.image("outline", "./assets/gameOutline.png");
         this.load.image("baby", "./assets/gameBaby.png");
-
-        // load spritesheet for death animation
-        this.load.spritesheet
-        (
-            "explosion",
-            "./assets/explosion.png",
-            {
-                frameWidth: 64,
-                frameHeight: 32,
-                startFrame: 0,
-                endFrame: 9
-            }
-        );
     } 
     //-end preload()------------------------------------------------------------
     //--------------------------------------------------------------------------
@@ -183,27 +163,6 @@ class Play extends Phaser.Scene
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-
-        //----------------------------------------------------------------------
-        // add the animations
-        // animation config for enemy explosions
-        this.anims.create
-        (
-            {
-                key: "explode", //
-                frames: this.anims.generateFrameNumbers
-                (
-                    "explosion", // key
-                    { // configuration object
-                        start: 0,
-                        end: 9,
-                        first: 0
-                    }
-                ),
-                frameRate: 30
-            }
-        );
-
         //----------------------------------------------------------------------
         // add the UI text
         // player score updates during play
@@ -211,7 +170,7 @@ class Play extends Phaser.Scene
         // scores display configuration
         let scoreConfig =
         {
-            fontFamily: "Courier",
+            fontFamily: "Comic Sans MS",
             fontSize: "20px",
             backgroundColor: "#03938c",
             color: "#FFFFFF",
@@ -221,9 +180,9 @@ class Play extends Phaser.Scene
         };
         this.scoreLeft = this.add.text
         (
-            game.config.width/2 + 15, // x-coord
-            game.config.height - 27, // y-coord
-            "$" + this.p1Score, // initial text
+            game.config.width/2 - 80, // x-coord
+            game.config.height - 35, // y-coord
+            "Score" + this.p1Score, // initial text
             scoreConfig // config settings
         );
 
@@ -236,7 +195,7 @@ class Play extends Phaser.Scene
         // create an object to populate the text configuration members
         let gameClockConfig =
         {
-            fontFamily: "Courier",
+            fontFamily: "Comic Sans MS",
             fontSize: "20px",
             backgroundColor: "#03938c",
             color: "#FFFFFF",
@@ -247,8 +206,8 @@ class Play extends Phaser.Scene
         // add the text to the screen
         this.timeLeft = this.add.text
         (
-            game.config.width/2 + 125,       // x-coord
-            game.config.height - 80,         // y-coord
+            game.config.width/2 + 80,       // x-coord
+            game.config.height - 35,         // y-coord
             this.formatTime(this.gameClock), // text to display
             gameClockConfig // text style config object
         );
@@ -260,12 +219,12 @@ class Play extends Phaser.Scene
 
         let countdownConfig =
         {
-            fontFamily: "Courier",
+            fontFamily: "Comic Sans MS",
             fontSize: "50px",
-            backgroundColor: "#03938c",
+            backgroundColor: "#63beff",
             color: "#FFFFFF",
             align: "center",
-            padding: {top: 30, bottom: 30},
+            padding: {top: 20, bottom: 20},
             fixedWidth: 500
         };
         this.countdown = game.settings.countdown;
@@ -388,8 +347,8 @@ class Play extends Phaser.Scene
         // when game is over remove the game clock event
         if(this.gameOver) {
             this.time.removeAllEvents();
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER').setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or M to Menu').setOrigin(0.5);
+            this.go1.stop();
+            this.scene.start("gameoverScene");
         }
 
         // check for key input to restart
