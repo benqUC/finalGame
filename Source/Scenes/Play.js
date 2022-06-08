@@ -35,6 +35,7 @@ class Play extends Phaser.Scene
 
         // load player
         this.load.image("tile", "./assets/gameTile.png");
+        this.load.image("path", "./assets/gamePath.png");
         this.load.image("tower", "./assets/gameTower.png");
         this.load.image("player", "./assets/gamePlayer.png");
         this.load.image("outline", "./assets/gameOutline.png");
@@ -75,26 +76,29 @@ class Play extends Phaser.Scene
         //----------------------------------------------------------------------
         // configure the user interface
         // grid placement
-        var X = game.config.width/50;
-        var Y = game.config.height/50;
-        
         this.grid = [];
+        this.map = [[0,0,0,0,1,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,1,1,1,1,1,1,0,0,0],
+                    [1,1,1,1,1,1,0,0,0,1,0,1,1],
+                    [0,0,1,1,1,1,0,0,0,1,0,1,1],
+                    [0,0,1,0,0,0,1,1,1,1,0,1,1],
+                    [0,0,1,1,1,1,4,1,1,1,1,1,1],
+                    [0,0,0,0,0,0,1,0,0,0,0,0,1],
+                    [0,0,1,1,1,1,1,0,0,0,0,0,1],
+                    [0,0,1,0,0,0,0,0,0,0,0,0,1],
+                    [0,0,1,1,1,1,1,1,1,1,1,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,1,0,0]];
 
-        for(var i = 0; i < X; i++){ // x axis
-            this.grid[i] = [];
-            for(var j = 0; j < Y; j++){ // y axis
-                this.grid[i][j] = new Tile
-                (
-                    this, // scene
-                    25 + 50 * i, // x-coord
-                    25 + 50 * j, // y-coord
-                    "tile", // texture
-                    0, // frame
-                    50, // width
-                    50, // length
-                    0, // height (0 is passable, 1 can have items be thrown over it, 2 is completely impassable on ground, 3 is impassible mid air)
-                ).setScale(0.5, 0.5).setOrigin(0, 0);
-                this.add.image(this.grid[i][j].x, this.grid[i][j].y, 'tile')
+        for(var i = 0; i < this.map.length; i++){ // x axis
+            for(var j = 0; j < this.map[i].length; j++){ // y axis
+                var pX = 25 + 50 * j;
+                var pY = 25 + 50 * i;
+                if(this.map[i][j] == 0){
+                    this.add.image(pX, pY, 'tile')
+                }
+                if(this.map[i][j] == 1){
+                    this.add.image(pX, pY, 'path')
+                }
             }
         }
         this.outline = this.add.image(-100, -100, 'outline');
@@ -338,7 +342,6 @@ class Play extends Phaser.Scene
     //--------------------------------------------------------------------------
     update()
     {   
-        console.log(this.rD1);
         // play animations when player is moving
         if (keyW.isDown || keyA.isDown || keyS.isDown || keyD.isDown) {
             this.player.play("player_walk", true);
@@ -569,7 +572,7 @@ class Play extends Phaser.Scene
     placeTower(x,y){
         var i = Math.floor(x/50);
         var j = Math.floor(y/50);
-        this.grid[i][j] = new Tower(
+        this.tower = new Tower(
                 this, // scene
                 25 + 50 * i, // x-coord
                 25 + 50 * j, // y-coord
@@ -578,8 +581,8 @@ class Play extends Phaser.Scene
                 50, // width
                 50, // length
                 1, // height (0 is passable, 1 can have items be thrown over it, 2 is completely impassable on ground, 3 is impassible mid air)
-        ).setScale(0.5, 0.5).setOrigin(0, 0);
-        this.add.image(this.grid[i][j].x, this.grid[i][j].y, 'tower')
+        ).setScale(1, 1).setOrigin(0.5, 0.5);
+
     }
 
     createOutline(x,y){ // creates outline for placing buildings
@@ -589,6 +592,8 @@ class Play extends Phaser.Scene
         this.outline = this.add.image(X, Y, 'outline');
         this.outline.alpha = 0.0;
     }
+
+    
     
     formatTime(ms)
     {
