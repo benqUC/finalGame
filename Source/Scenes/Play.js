@@ -109,6 +109,9 @@ class Play extends Phaser.Scene
         this.placeTower(2,3); // debug purposes
         console.log(this.grid[2][3].h)
 
+        
+        
+
         //----------------------------------------------------------------------
         // add in the game objects
         // add player (p1)
@@ -143,14 +146,14 @@ class Play extends Phaser.Scene
         this.player.play("car_anim");
         */
 
-        // array of obstacles and zombies
+        // array of obstacles and enemies
         this.obstacles = [];
-        this.zombies = [];
+        this.enemies = [];
 
 
-        // m is multiplier on how far zombie 2 is from zombie 1. Useful if we are moving roads
+        // m is multiplier on how far enemy 2 is from enemy 1. Useful if we are moving roads
         var m = 93;
-        // min/max value on zombie spawns
+        // min/max value on enemy spawns
         var min = -50;
         var max = -1000;
         // min/max on debris spawns
@@ -159,11 +162,12 @@ class Play extends Phaser.Scene
 
         var num = 4;
 
-        // add obstacle 1
-        this.obstacle1 = new Obstacle
-        (this, Phaser.Math.Between(this.omin, this.omax - 105), Phaser.Math.Between(min, max), 'roadblock1', 0).setOrigin(0, 0);
-        this.obstacles.push(this.obstacle1);
+        // add enemies 1
+        this.enemy = new Enemy
+        (this, 200, 0, 'candyCorn', 0, 10, 1).setOrigin(0, 0);
+        this.enemies.push(this.enemy);
 
+        console.log(this.enemies[0].path);
         //----------------------------------------------------------------------
         // add the user input
         // define mouse controls
@@ -184,7 +188,7 @@ class Play extends Phaser.Scene
 
         //----------------------------------------------------------------------
         // add the animations
-        // animation config for zombie explosions
+        // animation config for enemy explosions
         this.anims.create
         (
             {
@@ -341,6 +345,7 @@ class Play extends Phaser.Scene
     //--------------------------------------------------------------------------
     update()
     {   
+        
         // checks where in the grid the player is located at
         this.tileX = Math.floor((this.player.x)/50); // 27
         this.tileY = Math.floor((this.player.y)/50); // 24
@@ -389,17 +394,18 @@ class Play extends Phaser.Scene
                 }
             }*/
             
-            // update zombies
-            for(var i = 0; i < this.zombies.length; i++){
-                this.zombies[i].update(1, this.p1Lives);
+            // update enemies
+            
+            for(var i = 0; i < this.enemies.length; i++){
+                this.enemies[i].update(this.enemies[i].path);
             }
 
             // check if enemies overlap
             for(var i = 0; i < this.obstacles.length; i++){
-                for(var j = 0; j < this.zombies.length; j++){
-                    if(this.checkOverlap(this.zombies[j], this.obstacles[i]))
+                for(var j = 0; j < this.enemies.length; j++){
+                    if(this.checkOverlap(this.enemies[j], this.obstacles[i]))
                     {
-                        this.zombies[i].y -= 50;
+                        this.enemies[i].y -= 50;
                     }        
                 }        
             }
@@ -408,7 +414,7 @@ class Play extends Phaser.Scene
             this.reticle.y = this.input.mousePointer.y;
             // console.log(this.reticle.x + ',' + this.reticle.y);
             if(Phaser.Input.Keyboard.JustDown(keyF) && !this.isFiring){
-                console.log("testing");
+                //console.log("testing");
                 this.isFiring = true;
                 this.Bullet.rotation = Phaser.Math.Angle.Between(this.Bullet.x, this.Bullet.y, this.reticle.x, this.reticle.y);
                 // this.Bullet.x = this.input.mousePointer.x;
@@ -416,7 +422,7 @@ class Play extends Phaser.Scene
             }
             // if fired, move up
             if(this.isFiring) {
-                console.log("fired");
+                //console.log("fired");
                 this.Bullet.x = this.reticle.x;
 
                 this.Bullet.y -= 20;
@@ -425,8 +431,6 @@ class Play extends Phaser.Scene
             if(this.canPlace()){
                 this.input.on('pointerdown', () => this.placeTower(this.reticle.x, this.reticle.y));
             }
-
-            console.log(this.canPlace())
 
             this.player.rotation = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.reticle.x, this.reticle.y);
 
@@ -443,15 +447,15 @@ class Play extends Phaser.Scene
     //--------------------------------------------------------------------------
     //
     
-    /*checkCollision(player, zombie)
+    /*checkCollision(player, enemy)
     {
         // simple AABB bounds checking
         if
         (
-            player.x - 0 < zombie.x + zombie.width && // left side hitbox
-            player.x - 50 + player.width > zombie.x && // right side hitbox
-            player.y + 19 < zombie.y + zombie.height && // upper hitbox
-            player.height + player.y > zombie.y + 160 // lower hitbox
+            player.x - 0 < enemy.x + enemy.width && // left side hitbox
+            player.x - 50 + player.width > enemy.x && // right side hitbox
+            player.y + 19 < enemy.y + enemy.height && // upper hitbox
+            player.height + player.y > enemy.y + 160 // lower hitbox
         ) return true;
 
         else return false;
@@ -461,7 +465,7 @@ class Play extends Phaser.Scene
     {
         // simple AABB bounds checking
         if(this.grid[this.tileX-1][this.tileY].h < 0){ // left side hitbox
-            console.log("works");
+            //console.log("              ");
             this.player.cl = true;
         }/*
         if(this.grid[this.tileX-1][this.tileY].h < 0){ // right side hitbox
@@ -480,19 +484,13 @@ class Play extends Phaser.Scene
     canPlace(){
         var x = Math.floor(this.reticle.x/50);
         var y = Math.floor(this.reticle.y/50);
-        
-        if(this.grid[x][y] == this.grid[this.tileX - 1][this.tileY] ||               
-            this.grid[x][y] == this.grid[this.tileX + 1][this.tileY] ||               
-            this.grid[x][y] == this.grid[this.tileX][this.tileY - 1] ||               
-            this.grid[x][y] == this.grid[this.tileX][this.tileY + 1] ||               
-            this.grid[x][y] == this.grid[this.tileX - 1][this.tileY - 1] ||               
-            this.grid[x][y] == this.grid[this.tileX - 1][this.tileY + 1] ||               
-            this.grid[x][y] == this.grid[this.tileX + 1][this.tileY - 1] ||               
-            this.grid[x][y] == this.grid[this.tileX + 1][this.tileY + 1]){
+        /*console.log(this.grid[x][y].h)
+        if(this.grid[x][y].h == 0){
                 return true;
         } else {
             return false;
-        }
+        }*/
+        return true;
     }
 
     checkOverlap(o1, o2)
@@ -509,15 +507,15 @@ class Play extends Phaser.Scene
         else return false;
     }
 
-    zombieKill(zombie)
+    zombieKill(enemy)
     {
         this.gasTimer = 0;
-        zombie.alpha = 0; // set zombie to be fully transparent
-        zombie.y = Phaser.Math.Between(-50, -1000); // reset zombie position
-        zombie.alpha = 1; // set zombie to be fully visible
+        enemy.alpha = 0; // set enemy to be fully transparent
+        enemy.y = Phaser.Math.Between(-50, -1000); // reset enemy position
+        enemy.alpha = 1; // set enemy to be fully visible
 
         // score increment and repaint
-        this.p1Score += zombie.points;
+        this.p1Score += enemy.points;
         // update the high score if needed
         
         this.scoreLeft.text = "$" + this.p1Score;

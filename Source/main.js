@@ -3,8 +3,6 @@ let config =
 {
     type: Phaser.CANVAS,
     width: 650, //default 640
-    //width: 1700, //default 640
-    
     height: 500, //default 480
 
     // scale: {
@@ -34,6 +32,9 @@ let game = new Phaser.Game(config); // create main game object
 // set UI sizes
 let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize / 3;
+
+let graphics;
+let path;
 
 // define the game settings, initially set for easy mode
 game.settings =
