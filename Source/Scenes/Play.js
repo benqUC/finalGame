@@ -63,7 +63,7 @@ class Play extends Phaser.Scene
     create()
     {
         // initializes play scene
-        this.init = false;
+        this.setup = false;
         
         // load soundtracks
         this.start = this.sound.add('start1')
@@ -195,7 +195,9 @@ class Play extends Phaser.Scene
         keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -388,16 +390,26 @@ class Play extends Phaser.Scene
         
         //console.log(this.tileX+","+this.tileY)
         var j = this.tileX - 1;
-        if(!this.init){
+        if(!this.setup){
             if(!this.start.isPlaying & !this.checkpoint){
                 this.start.stop()       
-                this.init = true;
+                this.setup = true;
                 this.go1.play();
                 this.cdtLeft.destroy();
-                this.cdtMult = 0;
+                this.cdtMult = 0;   
                 this.tMult = 1;
             }            
         }
+
+        if (Phaser.Input.Keyboard.JustDown(keyP)) {
+            this.scene.pause();
+        }
+        if (Phaser.Input.Keyboard.JustDown(keyESC)) {
+            this.scene.resume("playScene");
+        }
+
+
+
 
         // when game is over remove the game clock event
         if(this.gameOver) {
@@ -407,7 +419,7 @@ class Play extends Phaser.Scene
         }
 
         // check for key input to restart
-        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR))
+        if( Phaser.Input.Keyboard.JustDown(keyR))
         {
             this.scene.restart(this.p1Score);
         }
@@ -415,7 +427,7 @@ class Play extends Phaser.Scene
         {
             this.scene.start("menuScene");
         }
-        if(!this.gameOver & this.init)
+        if(!this.gameOver & this.setup)
         {
             // update player
             this.player.update(this.p1Lives);
