@@ -8,30 +8,9 @@ class Tower extends Phaser.GameObjects.Sprite
         this.h = height;
     }
 
-    update(playerSpeed,xmin,xmax)
+    update(angleX,angleY)
     {
-        // move 
-        this.y += (playerSpeed);
-
-        // fade away as it resets 
-        if(this.y >= game.config.height-180){
-            this.alpha -= 0.1;
-        }
-
-        // wraparound from left to right edge
-        if(this.y >= game.config.height-130){
-            // fully opace
-            this.alpha = 1;
-            // min/max value on zombie spawns
-            var min = -50;
-            var max = -1000;
-            this.y = Phaser.Math.Between(min, max);
-            this.x = Phaser.Math.Between(xmin,xmax-this.width/2);
-        }  
+        this.rotation = Phaser.Math.Angle.Between(this.x, this.y, angleX, angleY);
     }
-
-    reset()
-    {
-        this.y = -50;
-    }
+    
 }

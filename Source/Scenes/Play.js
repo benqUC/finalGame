@@ -76,7 +76,6 @@ class Play extends Phaser.Scene
         //----------------------------------------------------------------------
         // configure the user interface
         // grid placement
-        this.grid = [];
         this.map = [[0,0,0,0,1,0,0,0,0,0,0,0,0],
                     [0,0,0,0,1,1,1,1,1,1,0,0,0],
                     [1,1,1,1,1,1,0,0,0,1,0,1,1],
@@ -88,6 +87,7 @@ class Play extends Phaser.Scene
                     [0,0,1,0,0,0,0,0,0,0,0,0,1],
                     [0,0,1,1,1,1,1,1,1,1,1,0,0],
                     [0,0,0,0,0,0,0,0,0,0,1,0,0]];
+        this.towers = [];
 
         for(var i = 0; i < this.map.length; i++){ // x axis
             for(var j = 0; j < this.map[i].length; j++){ // y axis
@@ -403,9 +403,9 @@ class Play extends Phaser.Scene
 
         if(!this.gameOver & this.setup)
         {
+            console.log(this.enemies)
             // update player
             this.player.update(this.p1Lives);
-            //this.checkCollision();
             
             // delay waves of enemies
             if(this.rD1 <= 0){
@@ -416,6 +416,11 @@ class Play extends Phaser.Scene
             // update enemies
             for(var i = 0; i < this.enemies.length; i++){
                 this.enemies[i].update(this.enemies[i].path);
+            }
+            // tower seeks closest enemy
+            for(var i = 0; i < this.towers.length; i ++){
+                var j = this.enemies.length - 1;
+                this.towers[i].update(this.enemies[0].x, this.enemies[0].y);
             }
 
             // } else if (this.rangeDist > 50) {
@@ -479,24 +484,6 @@ class Play extends Phaser.Scene
         else return false;
     }*/
 
-    checkCollision()
-    {
-        // simple AABB bounds checking
-        if(this.grid[this.tileX-1][this.tileY].h < 0){ // left side hitbox
-            //console.log("              ");
-            this.player.cl = true;
-        }/*
-        if(this.grid[this.tileX-1][this.tileY].h < 0){ // right side hitbox
-            Player.collideRight = true;
-        } 
-        if(this.grid[this.tileX-1][this.tileY].h < 0){ // upper hitbox
-            Player.collideUp = true;
-        }
-        if(this.grid[this.tileX-1][this.tileY].h < 0){ // lower hitbox
-            Player.collideDown = true;
-        }*/
-    }
-
     // spawn enemies
     spawnWave(){
             // add upper enemies
@@ -534,14 +521,15 @@ class Play extends Phaser.Scene
     }
 
     canPlace(){
-        if(this.reticle.x > 10 & this.reticle.x < 625 & this.reticle.y > 10 & this.reticle.y < 525){
-            console.log('works');
+/*        if(this.reticle.x > 10 & this.reticle.x < 625 & this.reticle.y > 10 & this.reticle.y < 525){    
             if(this.map[this.cursorX][this.cursorY] == 0){
+                console.log('works');
                 return true;
             } else {
                 return false;
             }
-        }
+        }*/
+        return true;
     }
 
     checkOverlap(o1, o2)
@@ -590,9 +578,17 @@ class Play extends Phaser.Scene
                 50, // length
                 1, // height (0 is passable, 1 can have items be thrown over it, 2 is completely impassable on ground, 3 is impassible mid air)
         ).setScale(1, 1).setOrigin(0.5, 0.5);
+        this.towers.push(this.tower);
         this.map[i][j] = 1;
     }
-    
+
+    getDistance(x1, y1, x2, y2){
+        let y = x2 - x1;
+        let x = y2 - y1;
+        
+        return Math.sqrt(x * x + y * y);
+    }
+
     formatTime(ms)
     {
         let s = ms/1000;
