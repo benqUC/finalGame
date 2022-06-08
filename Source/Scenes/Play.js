@@ -20,9 +20,6 @@ class Play extends Phaser.Scene
         this.load.atlas("parent", "./assets/gamePlayerAtlas.png", "./assets/playermap.json");
         this.load.atlas("candy", "./assets/gameEnemyAtlas.png", "./assets/enemymap.json");
 
-        // load enemies
-        this.load.image("zombie", "./assets/zombie.png");
-
         // load environment
         this.load.image("roadblock1", "./assets/obstacles/bigRoadblock.png");
         this.load.image("obstacle1", "./assets/obstacles/obstacle01.png");
@@ -511,7 +508,7 @@ class Play extends Phaser.Scene
                 (this, l, 400, 'candy', 0, 10, 4).setOrigin(0, 0);
                 this.enemy.play('enemy_anim');
                 this.enemies.push(this.enemy); 
-            }            
+            }          
     }
 
     canPlace(){
@@ -540,7 +537,7 @@ class Play extends Phaser.Scene
         else return false;
     }
 
-    zombieKill(enemy)
+    enemieKill(enemy)
     {
         enemy.alpha = 0; // set enemy to be fully transparent
         enemy.y = Phaser.Math.Between(-50, -1000); // reset enemy position
