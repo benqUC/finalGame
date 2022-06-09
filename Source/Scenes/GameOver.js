@@ -37,7 +37,7 @@ class GameOver extends Phaser.Scene
         if(Phaser.Input.Keyboard.JustDown(keySPACE))
         {
             this.sound.play("wrapper2");
-            this.scene.start("titleScene");
+            this.scene.start("menuScene");
         }
     }
 }
