@@ -317,7 +317,7 @@ class Play extends Phaser.Scene
         if(game.settings.hp <= 0){
             this.gameOver = true;
         }
-        if(game.settings.enemiesKilled <= 0){
+        if(this.p1Score >= 330){
             this.gameWin = true;
         }
 
@@ -413,9 +413,9 @@ class Play extends Phaser.Scene
             for(var i = 0; i < this.enemies.length; i++){
                 if(this.checkOverlap(this.baby, this.enemies[i]))
                 {
-                    game.settings.hp--;
-                    console.log(game.settings.hp);
-                    this.enemieKill(this.enemies[i]);
+                    // game.settings.hp--;
+                    // console.log(game.settings.hp);
+                    this.babyKill(this.enemies[i]);
                 }        
             }
             
@@ -458,8 +458,8 @@ class Play extends Phaser.Scene
             for(var i = 0; i < this.enemies.length; i++){
                 if(this.checkOverlap(this.player, this.enemies[i]))
                 {
-                    game.settings.hp--;
-                    console.log(game.settings.hp);
+                    // game.settings.hp--;
+                    // console.log(game.settings.hp);
                     this.enemieKill(this.enemies[i]);
                 }        
             }
@@ -522,6 +522,7 @@ class Play extends Phaser.Scene
             } 
             this.input.on('gameobjectdown', function (pointer, gameObject) {
                 gameObject.destroy();
+                this.enemieKill(this.enemies[1]);
             });  
     }
 
@@ -559,11 +560,32 @@ class Play extends Phaser.Scene
         
         this.scoreLeft.text = "$" + this.p1Score;
 
-        this.p1Lives -= 1;
+        // game.settings.hp -= 1;
+        // this.p1Lives -= 1;
 
-        if (this.p1Lives <= 0) {
-            this.gameOver = true;
-        }
+        // if (this.p1Lives <= 0) {
+        //     this.gameOver = true;
+        // }
+    }
+
+    babyKill(enemy)
+    {
+        enemy.alpha = 0; // set enemy to be fully transparent
+        enemy.y = Phaser.Math.Between(-50, -1000); // reset enemy position
+        enemy.alpha = 1; // set enemy to be fully visible
+
+        // score increment and repaint
+        // this.p1Score += enemy.points;
+        // update the high score if needed
+        
+        // this.scoreLeft.text = "$" + this.p1Score;
+
+        game.settings.hp -= 1;
+        // this.p1Lives -= 1;
+
+        // if (this.p1Lives <= 0) {
+        //     this.gameOver = true;
+        // }
     }
 
     placeTower(x,y){
