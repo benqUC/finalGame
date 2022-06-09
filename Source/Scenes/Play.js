@@ -531,17 +531,6 @@ class Play extends Phaser.Scene
         } else {
             return true;
         }
-        
-
-/*        if(this.reticle.x > 10 & this.reticle.x < 625 & this.reticle.y > 10 & this.reticle.y < 525){    
-            if(this.map[this.cursorX][this.cursorY] == 0){
-                console.log('works');
-                return true;
-            } else {
-                return false;
-            }
-        }*/
-        
     }
 
     checkOverlap(o1, o2)

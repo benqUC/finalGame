@@ -74,7 +74,7 @@ class Tutorial extends Phaser.Scene
         (
             centerX,
             centerY,
-            "click to pick up boxes/build towers",
+            "click to destroy candy/build towers",
             tutConfig
         ).setOrigin(0.5);
         tutConfig.backgroundColor = "#0080db"; // change highlight
